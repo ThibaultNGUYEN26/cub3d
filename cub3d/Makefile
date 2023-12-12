@@ -6,22 +6,28 @@
 #    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2023/10/29 17:10:25 by thibault         ###   ########.fr        #
+#    Updated: 2023/12/12 14:33:19 by thibault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	cub3d
 SOURCES		=	./src
 OBJECTS		=	./bin
-INCLUDES	=	./includes
+INCLUDES	=	-I./includes \
+				-I./minilibx-linux
 
-SRCS		=	
+SRCS		=	libft/ft_strcmp.c \
+				libft/ft_strdup.c \
+				libft/ft_strlen.c \
+				libft/ft_substr.c \
+				ft_launch_map.c
 
 OBJS		=	$(addprefix ${OBJECTS}/, $(SRCS:.c=.o))
 
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -g #-fsanitize=undefined -fsanitize=address
-CINCLUDES	=	-I ${INCLUDES}
+CFLAGS		=	-Wall -Wextra -Werror ${INCLUDES} -L/usr/local/bin -O3 -g -fsanitize=undefined -fsanitize=address
+LIBS		=	-lmlx -lXext -lX11 -lm
+CINCLUDES	=	${INCLUDES}
 
 BLACK		=	"\033[1;30m"
 RED			=	"\033[1;31m"
@@ -56,14 +62,14 @@ ${OBJECTS}/%.o: ${SOURCES}/%.c
 	@$(CC) $(CFLAGS) -o $@ -c $< $(CINCLUDES)
 	@$(eval COMPILED_OBJS=$(shell echo "$(COMPILED_OBJS)+1" | bc))
 
-all: ${NAME} norminette
+all: ${NAME} #norminette
 
 ${NAME}: ${OBJS} ${OBJECTS}/${NAME}.o
-	@echo $(GREEN)"\n● Compilation of ${NAME}..."$(EOC)
-	@${CC} ${CFLAGS}  ${CINCLUDES} -o ${NAME} ${OBJS} ${OBJECTS}/${NAME}.o
+	@echo $(GREEN)"\n● Compilation of ${NAME}...\n"$(EOC)
+	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${OBJECTS}/${NAME}.o ${LIBS}
 
-norminette:
-	@norminette | grep "Error!" > /dev/null && echo $(WHITE)"● [Norminette]: "$(RED)"KO\n"$(EOC) || echo $(WHITE)"● [Norminette]: "$(GREEN)"OK\n"$(EOC)
+#norminette:
+#	@norminette | grep "Error!" > /dev/null && echo $(WHITE)"● [Norminette]: "$(RED)"KO\n"$(EOC) || echo $(WHITE)"● [Norminette]: "$(GREEN)"OK\n"$(EOC)
 
 clean:
 	@echo ${RED}"● Deletion of binary files (.o)..."$(EOC)
