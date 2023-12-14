@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2023/12/12 14:33:09 by thibault         ###   ########.fr       */
+/*   Updated: 2023/12/12 20:40:47 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,22 @@
 # include <fcntl.h>
 # include <unistd.h>
 
+typedef struct s_data
+{
+	int		nb_lines;
+	int		longest_line;
+	char	**tab;
+}	t_data;
+
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strdup(char *s);
 int		ft_strlen(char *s);
 char	*ft_substr(char *s, int start, int len);
 
 void	ft_launch_map(char *map);
+t_data	*ft_count_file_lines(ssize_t bytes_read, char *buffer);
+int		ft_fill_tab(t_data *data, char *buffer);
+void	ft_free_tab(t_data *data);
+int		ft_parsing(t_data *data);
 
 #endif
