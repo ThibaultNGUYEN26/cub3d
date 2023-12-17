@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_launch_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2023/12/12 17:01:04 by thibault         ###   ########.fr       */
+/*   Updated: 2023/12/14 13:22:19 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	ft_launch_map(char *map)
 		exit(EXIT_FAILURE);
 	}
 	printf(GREEN "[INFO]" YELLOW " Opening map...\n" EOC);
+	ft_parsing(data);
 	ft_free_tab(data);
 	free(data);
 	close(fd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tab_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:06:22 by thibault          #+#    #+#             */
-/*   Updated: 2023/12/12 20:40:44 by thibault         ###   ########.fr       */
+/*   Updated: 2023/12/14 14:26:52 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_fill_tab(t_data *data, char *buffer)
 	int	j;
 	int	k;
 
-	data->tab = malloc(sizeof(char **) * data->nb_lines);
+	data->tab = malloc(sizeof(char **) * (data->nb_lines + 1));
 	if (!data->tab)
 		return (0);
 	i = -1;
@@ -78,10 +78,12 @@ int	ft_fill_tab(t_data *data, char *buffer)
 				k++;
 				while (j < data->longest_line)
 					data->tab[i][j++] = ' ';
+				data->tab[i][j] = '\0';
 				break ;
 			}
 			k++;
 		}
 	}
+	data->tab[i] = NULL;
 	return (1);
 }
