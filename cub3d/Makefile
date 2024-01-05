@@ -3,12 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
+#    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2023/12/14 13:24:42 by rchbouki         ###   ########.fr        #
+#    Updated: 2024/01/05 23:41:46 by thibault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 NAME		=	cub3d
 SOURCES		=	./src
@@ -21,6 +22,9 @@ SRCS		=	libft/ft_strcmp.c \
 				libft/ft_strlen.c \
 				libft/ft_substr.c \
 				ft_launch_map.c \
+				ft_tab_init.c \
+				mlx_window.c \
+				mlx_minimap.c
 				ft_parsing.c \
 				ft_tab_init.c
 
