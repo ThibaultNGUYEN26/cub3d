@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 17:12:49 by thibault          #+#    #+#             */
-/*   Updated: 2023/12/14 14:58:15 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/05 17:33:07 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ static int	ft_last_in_line(char *line)
 	return (index);
 }
 
+/* CAS D'ERREUR :
+		- si la 1ere ou derniere ligne a autre chose que des 1 ou des espaces
+		- si le premier element dans une ligne est autre qu'un 1
+		- si le dernier element dans une ligne est autre qu'un 1
+*/
 static int	ft_surroundings(t_data *data)
 {
 	int	i;
@@ -37,9 +42,10 @@ static int	ft_surroundings(t_data *data)
 	i = 0;
 	while (i < data->nb_lines)
 	{
-		j = 0;
+		// soit la premiere ligne ou la derniere
 		if (i == 0 || i == data->nb_lines - 1)
 		{
+			j = 0;
 			while (j < data->longest_line)
 			{
 				if (data->tab[i][j] != '1' && data->tab[i][j] != ' ')
@@ -47,27 +53,18 @@ static int	ft_surroundings(t_data *data)
 				j++;
 			}
 		}
-		else
-		{
-			while (j != (data->longest_line - 1) && data->tab[i][j] == ' ')
-				j++;
-			index = ft_last_in_line(data->tab[i]);
-			if (j != (data->longest_line - 1) && (data->tab[i][j] != '1' || data->tab[i][index] != '1'))
-				return (0);
-		}
+		j = 0;
+		// j = le premier element de la ligne
+		while (j != (data->longest_line - 1) && data->tab[i][j] == ' ')
+			j++;
+		// index le dernier element de la ligne
+		index = ft_last_in_line(data->tab[i]);
+		// si j n'est pas un 1 ou index n'est pas un 1
+		if (data->tab[i][j] != '1' || data->tab[i][index] != '1')
+			return (0);
 		i++;
 	}
 	return (1);
-}
-
-static int	ft_compare_spaces(char *s1, char *s2)
-{
-	int	res;
-	
-	res = ft_strcmp(s1, s2);
-	free(s1);
-	free(s2);
-	return (res);
 }
 
 static int	ft_spaces(t_data *data)
@@ -76,47 +73,100 @@ static int	ft_spaces(t_data *data)
 	int		j;
 	int		start;
 	int 	end;
-
+	
 	i = 0;
 	j = 0;
 	while (i < data->nb_lines)
 	{
 		while (j < data->longest_line)
 		{
-			// first space
+			// on rentre dans ce if au premier espace d'une SUITE d'espaces
 			if (data->tab[i][j] == ' ')
 			{
-				start = j - 1;
+				/* start = index du premier espace de la suite
+				   end = index de l'element juste après la suite d'espaces 
+				   example : "1       0" => tab[start] = '1' et tab[end] = '0' */
+				start = j;
 				while (data->tab[i][j] == ' ')
 					j++;
 				end = j;
-				// if before and after the spaces we don't have 1s, wrong map
-				if (((start != -1) && (data->tab[i][start] != '1')) || (end != data->longest_line && data->tab[i][end] != '1'))
+				if (((start != 0) && (data->tab[i][start - 1] != '1')) || (end != data->longest_line && data->tab[i][end] != '1'))
 					return (0);
-				// if we DONT have the same spaces in the previous line
-				if ((i - 1) >= 0 && ft_compare_spaces(ft_substr(data->tab[i - 1], start + 1, end - start), ft_substr(data->tab[i], start + 1, end - start)))
+				// On check si tout va bien dans la ligne suivante
+				if (i + 1 != data->nb_lines)
 				{
-					// we check if we have ones surrounding upwards
-					while (start <= end)
+					if (data->tab[i + 1][start] == ' ')
 					{
-						if (start >= 0 && data->tab[i - 1][start] != '1')
+						while (start < end)
+						{
+							if (data->tab[i + 1][start] == ' ')
+								start++;
+							else if (data->tab[i + 1][start] == '1')
+							{
+								while (++start <= end)
+									if (data->tab[i + 1][start] != '1')
+										return (0);
+								break;
+							}
+							else
+								return (0);
+						}
+						// start est à end là il faut que ça soit un 1
+						if (data->tab[i + 1][start] != '1')
 							return (0);
-						start++;
+					}
+					else
+					{
+						if (start != 0 && data->tab[i + 1][start - 1] != '1')
+							return (0);
+						if (data->tab[i + 1][start] == '1')
+						{
+							while (++start <= end)
+								if (data->tab[i + 1][start] != '1')
+									return (0);
+						}
+						else
+							return (0);
 					}
 				}
-				// if we DONT have the same spaces in the next line
-				if ((i + 1) < data->nb_lines && ft_compare_spaces(ft_substr(data->tab[i + 1], start + 1, end - start), ft_substr(data->tab[i], start + 1, end - start)))
+				// On fait pareil pour la ligne avant
+				if (i != 0)
 				{
-					// we check if we have ones surrounding upwards
-					if (start == -1)
-						start = 0;
-					while (start <= end && start < data->longest_line)
+					if (data->tab[i - 1][start] == ' ')
 					{
-						if (data->tab[i + 1][start] != '1' && data->tab[i + 1][start] != ' ')
+						while (start < end)
+						{
+							if (data->tab[i - 1][start] == ' ')
+								start++;
+							else if (data->tab[i - 1][start] == '1')
+							{
+								while (++start <= end)
+									if (data->tab[i - 1][start] != '1')
+										return (0);
+								break;
+							}
+							else
+								return (0);
+						}
+						// start est à end là il faut que ça soit un 1
+						if (data->tab[i - 1][start] != '1')
 							return (0);
-						start++;
+					}
+					else
+					{
+						if (start != 0 && data->tab[i - 1][start - 1] != '1')
+							return (0);
+						if (data->tab[i - 1][start] == '1')
+						{
+							while (++start <= end)
+								if (data->tab[i - 1][start] != '1')
+									return (0);
+						}
+						else
+							return (0);
 					}
 				}
+				j = ++end;
 			}
 			else
 				j++;
