@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 17:12:49 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/05 17:33:07 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/05 23:33:05 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,116 +67,7 @@ static int	ft_surroundings(t_data *data)
 	return (1);
 }
 
-static int	ft_spaces(t_data *data)
-{
-	int		i;
-	int		j;
-	int		start;
-	int 	end;
-	
-	i = 0;
-	j = 0;
-	while (i < data->nb_lines)
-	{
-		while (j < data->longest_line)
-		{
-			// on rentre dans ce if au premier espace d'une SUITE d'espaces
-			if (data->tab[i][j] == ' ')
-			{
-				/* start = index du premier espace de la suite
-				   end = index de l'element juste après la suite d'espaces 
-				   example : "1       0" => tab[start] = '1' et tab[end] = '0' */
-				start = j;
-				while (data->tab[i][j] == ' ')
-					j++;
-				end = j;
-				if (((start != 0) && (data->tab[i][start - 1] != '1')) || (end != data->longest_line && data->tab[i][end] != '1'))
-					return (0);
-				// On check si tout va bien dans la ligne suivante
-				if (i + 1 != data->nb_lines)
-				{
-					if (data->tab[i + 1][start] == ' ')
-					{
-						while (start < end)
-						{
-							if (data->tab[i + 1][start] == ' ')
-								start++;
-							else if (data->tab[i + 1][start] == '1')
-							{
-								while (++start <= end)
-									if (data->tab[i + 1][start] != '1')
-										return (0);
-								break;
-							}
-							else
-								return (0);
-						}
-						// start est à end là il faut que ça soit un 1
-						if (data->tab[i + 1][start] != '1')
-							return (0);
-					}
-					else
-					{
-						if (start != 0 && data->tab[i + 1][start - 1] != '1')
-							return (0);
-						if (data->tab[i + 1][start] == '1')
-						{
-							while (++start <= end)
-								if (data->tab[i + 1][start] != '1')
-									return (0);
-						}
-						else
-							return (0);
-					}
-				}
-				// On fait pareil pour la ligne avant
-				if (i != 0)
-				{
-					if (data->tab[i - 1][start] == ' ')
-					{
-						while (start < end)
-						{
-							if (data->tab[i - 1][start] == ' ')
-								start++;
-							else if (data->tab[i - 1][start] == '1')
-							{
-								while (++start <= end)
-									if (data->tab[i - 1][start] != '1')
-										return (0);
-								break;
-							}
-							else
-								return (0);
-						}
-						// start est à end là il faut que ça soit un 1
-						if (data->tab[i - 1][start] != '1')
-							return (0);
-					}
-					else
-					{
-						if (start != 0 && data->tab[i - 1][start - 1] != '1')
-							return (0);
-						if (data->tab[i - 1][start] == '1')
-						{
-							while (++start <= end)
-								if (data->tab[i - 1][start] != '1')
-									return (0);
-						}
-						else
-							return (0);
-					}
-				}
-				j = ++end;
-			}
-			else
-				j++;
-		}
-		i++;
-	}
-	return (1);
-}
 
-/* 
 static int	ft_check_player(t_data *data)
 {
 	int	i;
@@ -215,7 +106,7 @@ static int	ft_check_player(t_data *data)
 		return (0);
 	}
 	return (1);
-} */
+}
 
 int	ft_parsing(t_data *data)
 {
@@ -224,12 +115,7 @@ int	ft_parsing(t_data *data)
 		printf(RED "[ERROR]" YELLOW " Walls are not closed\n" EOC);
 		return (0);
 	}
-	/* if (!ft_check_player(data))
-		return (0); */
-	if (!ft_spaces(data))
-	{
-		printf(RED "[ERROR]" YELLOW " Spaces are not closed\n" EOC);
+	if (!ft_check_player(data))
 		return (0);
-	}
 	return (1);
 }

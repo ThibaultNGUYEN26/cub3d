@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:06:22 by thibault          #+#    #+#             */
-/*   Updated: 2023/12/14 14:26:52 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/05 23:31:38 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,17 @@ int	ft_fill_tab(t_data *data, char *buffer)
 		while (++j <= data->longest_line)
 		{
 			if (buffer[k] != '\n' && buffer[k] != '\0')
-				data->tab[i][j] = buffer[k];
+			{
+				if (buffer[k] == ' ')
+					data->tab[i][j] = '1';
+				else
+					data->tab[i][j] = buffer[k];
+			}
 			else
 			{
 				k++;
 				while (j < data->longest_line)
-					data->tab[i][j++] = ' ';
+					data->tab[i][j++] = '1';
 				data->tab[i][j] = '\0';
 				break ;
 			}
