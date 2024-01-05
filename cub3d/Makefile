@@ -6,7 +6,7 @@
 #    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2023/12/12 17:06:52 by thibault         ###   ########.fr        #
+#    Updated: 2024/01/04 15:04:30 by thibault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ SRCS		=	libft/ft_strcmp.c \
 				libft/ft_strlen.c \
 				libft/ft_substr.c \
 				ft_launch_map.c \
-				ft_tab_init.c
+				ft_tab_init.c \
+				mlx_window.c \
+				mlx_minimap.c
 
 OBJS		=	$(addprefix ${OBJECTS}/, $(SRCS:.c=.o))
 

@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2023/12/12 17:01:04 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/04 15:03:13 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	ft_check_extension(char *map)
 
 void	ft_print_tab(t_data *data)
 {
+	printf("mapWidth %d\n", data->longest_line);
+	printf("mapHeight %d\n", data->nb_lines);
 	for (int i = 0; i < data->nb_lines; i++)
 	{
 		for (int j = 0; j < data->longest_line; j++)
@@ -41,7 +43,7 @@ void	ft_print_tab(t_data *data)
 	}
 }
 
-void	ft_launch_map(char *map)
+t_data	*ft_launch_map(char *map)
 {
 	int		fd;
 	ssize_t	bytes_read;
@@ -82,7 +84,6 @@ void	ft_launch_map(char *map)
 		exit(EXIT_FAILURE);
 	}
 	printf(GREEN "[INFO]" YELLOW " Opening map...\n" EOC);
-	ft_free_tab(data);
-	free(data);
 	close(fd);
+	return (data);
 }
