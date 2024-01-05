@@ -6,9 +6,10 @@
 #    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/04 15:04:30 by thibault         ###   ########.fr        #
+#    Updated: 2024/01/05 23:41:46 by thibault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 NAME		=	cub3d
 SOURCES		=	./src
@@ -24,6 +25,8 @@ SRCS		=	libft/ft_strcmp.c \
 				ft_tab_init.c \
 				mlx_window.c \
 				mlx_minimap.c
+				ft_parsing.c \
+				ft_tab_init.c
 
 OBJS		=	$(addprefix ${OBJECTS}/, $(SRCS:.c=.o))
 
