@@ -6,11 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/01/04 15:03:13 by thibault         ###   ########.fr       */
-=======
-/*   Updated: 2023/12/14 13:22:19 by rchbouki         ###   ########.fr       */
->>>>>>> 88dafdcd3a5af06fbc5c9ee066c3e9d04ae6b520
+/*   Updated: 2024/01/06 00:09:22 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +84,7 @@ t_data	*ft_launch_map(char *map)
 		exit(EXIT_FAILURE);
 	}
 	printf(GREEN "[INFO]" YELLOW " Opening map...\n" EOC);
-<<<<<<< HEAD
-=======
 	ft_parsing(data);
-	ft_free_tab(data);
-	free(data);
->>>>>>> 88dafdcd3a5af06fbc5c9ee066c3e9d04ae6b520
 	close(fd);
 	return (data);
 }

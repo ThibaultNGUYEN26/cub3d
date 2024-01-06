@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:56:29 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/06 17:05:55 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/06 17:10:42 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ t_player *ft_player_init(void)
 	return (player);`
 }
 
-static void ft_player_direction(t_player *player, char dir)
+static void ft_player_direction(t_player *player, char dir, int i, int j)
 {
+	player->posX = i;
+	player->posY = j;
 	if (dir == 'N')
 	{
 		player->dirX = 0;
@@ -53,7 +55,7 @@ static void ft_player_direction(t_player *player, char dir)
 	}
 }
 
-void handle_key_event(int key, t_player *player)
+/* void handle_key_event(int key, t_player *player)
 {
 	if (key == KEY_W)
 	{
@@ -91,15 +93,11 @@ static void ft_rotate_player(t_player *player)
 		player->dirX = player->dirX * cos(player->rotSpeed) - player->dirY * sin(player->rotSpeed);
 		player->dirY = player->oldDirX * sin(player->rotSpeed) + player->dirY * cos(player->rotSpeed);
 	}
-}
+} */
 
-static void	ft_minimap(void *mlx, void *window, t_data *data, t_player *player)
-{
-	int	color;
-	int	i;
-	int	j;
-	int	dx;
-	int	dy;
+static void ft_minimap(void *mlx, void *window, t_data *data) {
+    int color;
+    int i, j, dx, dy;
 
 	i = -1;
 	while (++i < data->nb_lines)
@@ -107,27 +105,30 @@ static void	ft_minimap(void *mlx, void *window, t_data *data, t_player *player)
 		for (j = 0; j < data->longest_line; j++) {
 			if (data->tab[i][j] == '1')
 				color = 0x404040;
+			else if (data->tab[i][j] == 'N' || data->tab[i][j] == 'S' || data->tab[i][j] == 'W' || data->tab[i][j] == 'E')
+				ft_player_direction(data->player, data->tab[i][j], i, j);
 			else
 				color = 0xFFFFFF;
 
-			for (dy = 0; dy < 8; dy++) {
-				for (dx = 0; dx < 8; dx++) {
-					mlx_pixel_put(mlx, window, j * 8 + dx, i * 8 + dy, color);
-				}
-			}
-		}
-	}
-	int playerX = (int)(player->posX * 8);
-	int playerY = (int)(player->posY * 8);
-	for (dy = 0; dy < 8; dy++) {
-		for (dx = 0; dx < 8; dx++) {
-			mlx_pixel_put(mlx, window, playerX + dx, playerY + dy, 0xFF0000);
-		}
-	}
+            for (dy = 0; dy < 8; dy++) {
+                for (dx = 0; dx < 8; dx++) {
+                    mlx_pixel_put(mlx, window, j * 8 + dx, i * 8 + dy, color);
+                }
+            }
+        }
+    }
+	
+    int playerX = (int)(data->player->posX * 8);
+    int playerY = (int)(data->player->posY * 8);
+    for (dy = 0; dy < 8; dy++) {
+        for (dx = 0; dx < 8; dx++) {
+            mlx_pixel_put(mlx, window, playerX + dx, playerY + dy, 0xFF0000);
+        }
+    }
 }
 
 
-void	ft_draw_minimap(void *mlx, void *window, t_data *data, t_player *player)
+void	ft_draw_minimap(void *mlx, void *window, t_data *data)
 {
-	ft_minimap(mlx, window, data, player);
+	ft_minimap(mlx, window, data);
 }

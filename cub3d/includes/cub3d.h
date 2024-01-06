@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/05 17:31:03 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/06 00:09:19 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,24 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-typedef struct s_data
+typedef struct	s_player
 {
-	int		nb_lines;
-	int		longest_line;
-	char	**tab;
-}	t_data;
+	double		posX;
+	double		posY;
+	double		dirX;
+	double		dirY;
+	double		oldDirX;
+	double		oldDirY;
+	double		rotSpeed;
+}	t_player;
 
-typedef struct s_player
+typedef struct	s_data
 {
-	double	posX;
-	double	posY;
-	double	dirX;
-	double	dirY;
-	double	oldDirX;
-	double	oldDirY;
-	double	rotSpeed;
-} t_player;
+	int			nb_lines;
+	int			longest_line;
+	char		**tab;
+	t_player	*player;
+}	t_data;
 
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_strdup(char *s);
@@ -66,8 +67,8 @@ int			ft_fill_tab(t_data *data, char *buffer);
 void		ft_free_tab(t_data *data);
 int			ft_parsing(t_data *data);
 
-void		setup_mlx(t_data *data, t_player *player);
-void		ft_draw_minimap(void *mlx, void *window, t_data *data, t_player *player);
+void		setup_mlx(t_data *data);
+void		ft_draw_minimap(void *mlx, void *window, t_data *data);
 t_player	*ft_player_init(void);
 
 #endif
