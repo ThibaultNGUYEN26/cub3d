@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/08 19:35:51 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:57:18 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ typedef struct	s_data
 	void		*win;
 	void		*img;
 	char		*addr;
-	void		*img2;
-	char		*addr2;
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;

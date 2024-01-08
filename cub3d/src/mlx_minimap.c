@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_minimap.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:56:29 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/08 19:47:53 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:56:18 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,9 @@ void draw_circle(t_data *data, int centerX, int centerY, int radius, int color) 
 
 void	ft_draw_minimap(t_data *data)
 {
+	mlx_destroy_image(data->mlx, data->img);
+	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
 	ft_minimap(data);
 	draw_circle(data, data->player->posX, data->player->posY, 1, 0xFF0000);
     ft_draw_fov_line(data, FOV_LENGTH, 60.0f * (M_PI / 180.0f), 20);
