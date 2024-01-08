@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:56:29 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/08 14:28:09 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:44:18 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,14 +243,22 @@ void clear_buffer(t_data *data)
 	memset(data->addr, 0, WIDTH * HEIGHT * (data->bits_per_pixel / 8));
 }
 
+void draw_circle(t_data *data, int centerX, int centerY, int radius, int color, int scale_factor) {
+    for (int y = -radius; y <= radius; y++) {
+        for (int x = -radius; x <= radius; x++) {
+            if (x * x + y * y <= radius * radius) {
+                ft_mlx_put_pixel(centerX + x + scale_factor / 2, centerY + y + scale_factor / 2, color, data);
+            }
+        }
+    }
+}
+
 void draw_player_and_rays(t_data *data, int scale_factor) {
     // Draw the player at 1:1 pixel size at the correct position
     int playerX = data->player->posX * scale_factor;
     int playerY = data->player->posY * scale_factor;
-	for (int dy = 0; dy < scale_factor; ++dy) {
-        for (int dx = 0; dx < scale_factor; ++dx)
-    		ft_mlx_put_pixel(playerX + dx, playerY + dy, 0xFF0000, data); // PLAYER_COLOR is the color you want for the player
-	}
+	int playerRadius = scale_factor / 2; // Adjust the radius as needed
+    draw_circle(data, playerX, playerY, playerRadius, 0xFF0000, scale_factor);
 
     // Draw the rays at 1:1 pixel size
     ft_draw_fov_line(data, FOV_LENGTH, 60.0f * (M_PI / 180.0f), 20, scale_factor); // This function needs to be adapted to draw without scaling
