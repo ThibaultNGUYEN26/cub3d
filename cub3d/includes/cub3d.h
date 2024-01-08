@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/06 00:09:19 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:25:49 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,18 @@
 # define KEY_D		100
 # define KEY_LEFT	65361
 # define KEY_RIGHT	65363
-# define MOVE_SPEED	5
+# define MOVE_SPEED	1
+# define FOV_LENGTH	5
+# define ROT_SPEED	0.5
+# define M_PI		3.1415926536897932384626433832795028841971
 
 # include "../minilibx-linux/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <math.h>
+# include <string.h>
 
 typedef struct	s_player
 {
@@ -50,6 +55,16 @@ typedef struct	s_player
 
 typedef struct	s_data
 {
+	void		*mlx;
+	void		*win;
+	void		*img;
+	char		*addr;
+	void		*img2;
+	char		*addr2;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	int			key;
 	int			nb_lines;
 	int			longest_line;
 	char		**tab;
@@ -68,7 +83,10 @@ void		ft_free_tab(t_data *data);
 int			ft_parsing(t_data *data);
 
 void		setup_mlx(t_data *data);
-void		ft_draw_minimap(void *mlx, void *window, t_data *data);
-t_player	*ft_player_init(void);
+void		ft_draw_minimap(t_data *data);
+void		ft_player_init(t_data *data);
+void		handle_key_event(int key, t_data *data);
+void		ft_rotate_player(int key, t_player *player);
+void		ft_mlx_put_pixel(int x, int y, int color, t_data *data);
 
 #endif

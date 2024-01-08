@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:10:47 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/06 00:06:57 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:17:58 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	else
 	{
 		data = ft_launch_map(argv[1]);
-		data->player = ft_player_init();
+		ft_player_init(data);
 	}
 	setup_mlx(data);
 	return (0);
