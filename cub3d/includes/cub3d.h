@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/08 14:25:49 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:35:51 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define FOV_LENGTH	5
 # define ROT_SPEED	0.5
 # define M_PI		3.1415926536897932384626433832795028841971
+# define SCALE		8
 
 # include "../minilibx-linux/mlx.h"
 # include <stdio.h>
@@ -84,6 +85,7 @@ int			ft_parsing(t_data *data);
 
 void		setup_mlx(t_data *data);
 void		ft_draw_minimap(t_data *data);
+void		ft_minimap(t_data *data);
 void		ft_player_init(t_data *data);
 void		handle_key_event(int key, t_data *data);
 void		ft_rotate_player(int key, t_player *player);

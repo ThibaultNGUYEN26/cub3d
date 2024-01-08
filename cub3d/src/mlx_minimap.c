@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:56:29 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/08 14:44:18 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:47:53 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ static void mlx_pixel_put_line(t_data *data, int x0, int y0, int x1, int y1, int
 	}
 }
 
-static void ft_draw_fov_line(t_data *data, int length, float fov_angle, int num_rays, int scale_factor) {
+static void ft_draw_fov_line(t_data *data, int length, float fov_angle, int num_rays) {
     float angle_step = fov_angle / (num_rays - 1);
     float start_angle = -fov_angle / 2; // Start at the left edge of the FOV
 
@@ -172,11 +172,11 @@ static void ft_draw_fov_line(t_data *data, int length, float fov_angle, int num_
         }
 
         // Draw the line from the player to the final ray position
-        mlx_pixel_put_line(data, data->player->posX * scale_factor + scale_factor / 2, data->player->posY * scale_factor + scale_factor / 2, (int)rayPosX * scale_factor + scale_factor / 2, (int)rayPosY * scale_factor + scale_factor / 2, 0xFF0000); // Red color for the rays
+        mlx_pixel_put_line(data, data->player->posX * SCALE + SCALE / 2, data->player->posY * SCALE + SCALE / 2, (int)rayPosX * SCALE + SCALE / 2, (int)rayPosY * SCALE + SCALE / 2, 0xFF0000); // Red color for the rays
     }
 }
 
-static void ft_minimap(t_data *data)
+void ft_minimap(t_data *data)
 {
 	int	color;
 	int	i;
@@ -193,82 +193,32 @@ static void ft_minimap(t_data *data)
 				color = 0x404040;
 			else
 				color = 0xFFFFFF;
-			ft_mlx_put_pixel(j, i, color, data);
+			for (int si = 0; si < SCALE; si++)
+            {
+                for (int sj = 0; sj < SCALE; sj++)
+					ft_mlx_put_pixel(j * SCALE + sj, i * SCALE + si, color, data);
+			}
 		}
 	}
 }
 
-static void ft_mlx_put_pixel_scaled(char *addr, int x, int y, int color, int bpp, int line_length) {
-    char *dst = addr + (y * line_length + x * (bpp / 8));
-    *(unsigned int *)dst = color;
-}
-
-static void scale_minimap(t_data *data, int scale_factor) {
-    // Create a new image for the scaled minimap
-    void *scaled_img = mlx_new_image(data->mlx, WIDTH * scale_factor, HEIGHT * scale_factor);
-    int scaled_bpp, scaled_line_length, scaled_endian;
-    char *scaled_addr = mlx_get_data_addr(scaled_img, &scaled_bpp, &scaled_line_length, &scaled_endian);
-
-    // Loop through each pixel of the original image and draw a scale_factor x scale_factor square
-    // at the corresponding location in the scaled image
-    for (int y = 0; y < HEIGHT; ++y) {
-        for (int x = 0; x < WIDTH; ++x) {
-            int original_pixel_index = (y * data->line_length + x * (data->bits_per_pixel / 8));
-            int color = ((unsigned char)data->addr[original_pixel_index + 2] << 16) |
-                        ((unsigned char)data->addr[original_pixel_index + 1] << 8) |
-                        (unsigned char)data->addr[original_pixel_index];
-
-            // Draw a square of scale_factor x scale_factor in the scaled image
-            for (int dy = 0; dy < scale_factor; ++dy) {
-                for (int dx = 0; dx < scale_factor; ++dx) {
-                    int scaled_x = x * scale_factor + dx;
-                    int scaled_y = y * scale_factor + dy;
-                    ft_mlx_put_pixel_scaled(scaled_addr, scaled_x, scaled_y, color, scaled_bpp, scaled_line_length);
-                }
-            }
-        }
-    }
-
-    // Replace the original image with the scaled one
-    mlx_destroy_image(data->mlx, data->img); // Clean up the original image
-    data->img = scaled_img;
-    data->addr = scaled_addr;
-    data->bits_per_pixel = scaled_bpp;
-    data->line_length = scaled_line_length;
-    data->endian = scaled_endian;
-}
-
-void clear_buffer(t_data *data)
-{
-	memset(data->addr, 0, WIDTH * HEIGHT * (data->bits_per_pixel / 8));
-}
-
-void draw_circle(t_data *data, int centerX, int centerY, int radius, int color, int scale_factor) {
+void draw_circle(t_data *data, int centerX, int centerY, int radius, int color) {
+	centerX *= SCALE;
+    centerY *= SCALE;
+    radius *= SCALE / 2;
     for (int y = -radius; y <= radius; y++) {
         for (int x = -radius; x <= radius; x++) {
             if (x * x + y * y <= radius * radius) {
-                ft_mlx_put_pixel(centerX + x + scale_factor / 2, centerY + y + scale_factor / 2, color, data);
+                ft_mlx_put_pixel(centerX + x + SCALE / 2, centerY + y + SCALE / 2, color, data);
             }
         }
     }
-}
-
-void draw_player_and_rays(t_data *data, int scale_factor) {
-    // Draw the player at 1:1 pixel size at the correct position
-    int playerX = data->player->posX * scale_factor;
-    int playerY = data->player->posY * scale_factor;
-	int playerRadius = scale_factor / 2; // Adjust the radius as needed
-    draw_circle(data, playerX, playerY, playerRadius, 0xFF0000, scale_factor);
-
-    // Draw the rays at 1:1 pixel size
-    ft_draw_fov_line(data, FOV_LENGTH, 60.0f * (M_PI / 180.0f), 20, scale_factor); // This function needs to be adapted to draw without scaling
 }
 
 void	ft_draw_minimap(t_data *data)
 {
-	clear_buffer(data);
 	ft_minimap(data);
-	scale_minimap(data, 8);
-	draw_player_and_rays(data, 8);
+	draw_circle(data, data->player->posX, data->player->posY, 1, 0xFF0000);
+    ft_draw_fov_line(data, FOV_LENGTH, 60.0f * (M_PI / 180.0f), 20);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
