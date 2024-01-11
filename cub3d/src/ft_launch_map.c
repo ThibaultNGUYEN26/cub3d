@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_launch_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/06 00:09:22 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/11 21:40:14 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_data	*ft_launch_map(char *map)
 {
 	int		fd;
 	ssize_t	bytes_read;
-	char	buffer[1024];
+	char	*buffer = NULL;
 	t_data	*data;
 
 	data = NULL;
@@ -61,23 +61,41 @@ t_data	*ft_launch_map(char *map)
 		perror(RED "[ERROR]" YELLOW " Opening file" EOC);
 		exit(EXIT_FAILURE);
 	}
-	bytes_read = read(fd, buffer, 1024);
-	if (bytes_read > 0)
+	char	*old_buffer = NULL;
+	char	read2[1025];
+	int		len = 0;
+	while (1)
 	{
-		buffer[bytes_read] = '\0';
-		printf(GREEN "[INFO]" YELLOW " Initialization of the map...\n" EOC);
-		data = ft_count_file_lines(bytes_read, buffer);
-		if (!ft_fill_tab(data, buffer))
+		bytes_read = read(fd, read2, 1024);
+		if (bytes_read > 0)
 		{
-			printf(RED "[ERROR]" YELLOW " Allocation failure\n" EOC);
-			ft_free_tab(data);
-			free(data);
-			close(fd);
-			exit(EXIT_FAILURE);
+			if (!buffer)
+				old_buffer = ft_strdup("");
+			else
+				old_buffer = ft_strdup(buffer);
+			len += bytes_read;
+			read2[bytes_read] = '\0';
+			free(buffer);
+			buffer = ft_strjoin(old_buffer, read2);
 		}
-		ft_print_tab(data);
+		else
+			break;
 	}
-	if (bytes_read == -1)
+	buffer[len] = '\0';
+	printf(GREEN "[INFO]" YELLOW " Initialization of the map...\n" EOC);
+	data = ft_count_file_lines(len, buffer);
+	if (!ft_fill_tab(data, buffer))
+	{
+		printf(RED "[ERROR]" YELLOW " Allocation failure\n" EOC);
+		ft_free_tab(data);
+		free(data);
+		free(buffer);
+		close(fd);
+		exit(EXIT_FAILURE);
+	}
+	free(buffer);
+	ft_print_tab(data);
+	if (len == -1)
 	{
 		perror(RED "[ERROR]" YELLOW " Reading file" EOC);
 		close(fd);

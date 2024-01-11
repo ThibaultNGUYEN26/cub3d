@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/08 19:57:18 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/11 21:02:39 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@
 # define KEY_D		100
 # define KEY_LEFT	65361
 # define KEY_RIGHT	65363
-# define MOVE_SPEED	1
-# define FOV_LENGTH	5
-# define ROT_SPEED	0.5
-# define M_PI		3.1415926536897932384626433832795028841971
-# define SCALE		8
+# define MOVE_SPEED	0.1
+# define ROT_SPEED	0.05
+# define M_PI		3.1415926536897932384626433832795028841971693993751058209749
+# define NUM_KEYS	256
+# define MAP_SIZE	150
 
 # include "../minilibx-linux/mlx.h"
 # include <stdio.h>
@@ -52,6 +52,8 @@ typedef struct	s_player
 	double		oldDirX;
 	double		oldDirY;
 	double		rotSpeed;
+	double		planeX;
+	double		planeY;
 }	t_player;
 
 typedef struct	s_data
@@ -60,6 +62,10 @@ typedef struct	s_data
 	void		*win;
 	void		*img;
 	char		*addr;
+	void		*minimap_img;
+	char		*minimap_addr;
+	int			minimap_x;
+	int			minimap_y;
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
@@ -67,11 +73,13 @@ typedef struct	s_data
 	int			nb_lines;
 	int			longest_line;
 	char		**tab;
+	int			key_status[NUM_KEYS];
 	t_player	*player;
 }	t_data;
 
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_strdup(char *s);
+char		*ft_strjoin(char *s1, char *s2);
 int			ft_strlen(char *s);
 char		*ft_substr(char *s, int start, int len);
 
@@ -81,12 +89,11 @@ int			ft_fill_tab(t_data *data, char *buffer);
 void		ft_free_tab(t_data *data);
 int			ft_parsing(t_data *data);
 
-void		setup_mlx(t_data *data);
-void		ft_draw_minimap(t_data *data);
-void		ft_minimap(t_data *data);
+void		ft_mlx_init(t_data *data);
 void		ft_player_init(t_data *data);
-void		handle_key_event(int key, t_data *data);
-void		ft_rotate_player(int key, t_player *player);
-void		ft_mlx_put_pixel(int x, int y, int color, t_data *data);
+void		performRaycasting(t_data *data);
+void		updatePlayerPosition(int keycode, t_data *data);
+void		draw_minimap(t_data *data);
+void		raycastMinimap(t_data *data);
 
 #endif

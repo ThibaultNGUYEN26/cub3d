@@ -6,7 +6,7 @@
 #    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/08 18:58:14 by thibault         ###   ########.fr        #
+#    Updated: 2024/01/11 21:01:49 by thibault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,13 +19,16 @@ INCLUDES	=	-I./includes \
 
 SRCS		=	libft/ft_strcmp.c \
 				libft/ft_strdup.c \
+				libft/ft_strjoin.c \
 				libft/ft_strlen.c \
 				libft/ft_substr.c \
 				ft_launch_map.c \
 				ft_tab_init.c \
-				mlx_window.c \
-				mlx_minimap.c \
-				ft_parsing.c
+				ft_mlx_init.c \
+				ft_player.c \
+				ft_draw_minimap.c \
+				ft_raycasting.c \
+				ft_parsing.c 
 
 OBJS		=	$(addprefix ${OBJECTS}/, $(SRCS:.c=.o))
 
