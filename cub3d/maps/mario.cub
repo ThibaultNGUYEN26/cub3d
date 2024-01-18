@@ -1,3 +1,8 @@
+NO ./textures/mario.xpm
+SO ./textures/peach.xpm
+WE ./textures/luigi.xpm
+EA ./textures/bowser.xpm
+
 11111111111111111111
 10000000000000000001
 10000000011110111001
