@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 17:12:49 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/12 22:22:57 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/18 20:10:06 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,42 @@ static int	ft_last_in_line(char *line)
 	return (index);
 }
 
+static int	ft_white_spaces(char *s)
+{
+	int	i;
+
+	i = -1;
+	while (s[++i])
+		if (s[i] != '\f' && s[i] != '\t' && s[i] != '\n' && s[i] != '\r' && s[i] != '\v' && s[i] != ' ')
+			return (0);
+	return (1);
+}
+
 /* CAS D'ERREUR :
 		- si la 1ere ou derniere ligne a autre chose que des 1 ou des espaces
 		- si le premier element dans une ligne est autre qu'un 1
 		- si le dernier element dans une ligne est autre qu'un 1
 */
-static int	ft_surroundings(t_data *data, int line)
+static int	ft_surroundings(t_data *data)
 {
+	int	end;
 	int	i;
 	int	j;
 	int	index;
 
-	i = 0;
-	(void)line;
-	while (i < data->nb_lines)
+	i = data->nb_lines - 1;
+	while (i >= 0 && ft_white_spaces(data->tab[i]))
+		i--;
+	end = i;
+	while (i >= 0 && !ft_white_spaces(data->tab[i]))
+		i--;
+	if (end == 0 || i == 0)
+		return (0);
+	i++;
+	while (i < end)
 	{
 		// soit la premiere ligne ou la derniere
-		if (i == 0 || i == data->nb_lines - 1)
+		if (i == 0 || i == end)
 		{
 			j = 0;
 			while (j < data->longest_line)
@@ -108,18 +127,6 @@ static int	ft_check_player(t_data *data)
 	}
 	return (1);
 }
-
-static int	ft_white_spaces(char *s)
-{
-	int	i;
-
-	i = -1;
-	while (s[++i])
-		if (s[i] != '\f' && s[i] != '\t' && s[i] != '\n' && s[i] != '\r' && s[i] != '\v' && s[i] != ' ')
-			return (0);
-	return (1);
-}
-
 
 /* TEXTURES PARSING */
 static int	ft_check_textures(t_data *data, int i, int j, char *s2)
@@ -271,6 +278,11 @@ static int	ft_floor_ceiling(t_data *data, int line_textures)
 int	ft_parsing(t_data *data)
 {
 	int line_textures = 0;
+	if (!ft_surroundings(data))
+	{
+		printf(RED "[ERROR]" YELLOW " Walls are not closed\n" EOC);
+		return (0);
+	}
 	if (!ft_textures(data))
 	{
 		printf(RED "[ERROR]" YELLOW " Texures are not well formated\n" EOC);
@@ -279,11 +291,6 @@ int	ft_parsing(t_data *data)
 	if (!ft_floor_ceiling(data, line_textures))
 	{
 		printf(RED "[ERROR]" YELLOW " Floor/Ceiling colors are not well formated\n" EOC);
-		return (0);
-	}
-	if (!ft_surroundings(data, 0))
-	{
-		printf(RED "[ERROR]" YELLOW " Walls are not closed\n" EOC);
 		return (0);
 	}
 	if (!ft_check_player(data))
