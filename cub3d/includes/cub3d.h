@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/11 21:02:39 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/16 21:03:02 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # include <unistd.h>
 # include <math.h>
 # include <string.h>
+# include <limits.h>
 
 typedef struct	s_player
 {
@@ -55,6 +56,21 @@ typedef struct	s_player
 	double		planeX;
 	double		planeY;
 }	t_player;
+
+typedef struct	s_texture
+{
+	char		*t_north;
+	char		*t_south;
+	char		*t_west;
+	char		*t_east;
+	void		*img_ptr;
+	int			*data;
+	int			width;
+	int			height;
+	int			size_line;
+	int			bpp;
+	int			endian;
+}	t_texture;
 
 typedef struct	s_data
 {
@@ -74,8 +90,20 @@ typedef struct	s_data
 	int			longest_line;
 	char		**tab;
 	int			key_status[NUM_KEYS];
+	int			floor_color;
+	int			ceiling_color;
+	int			prev_mouse_x;
+	// t_texture	*texture;
+	t_texture	texture[4];
 	t_player	*player;
 }	t_data;
+
+enum TextureIndex {
+    TEXTURE_NORTH,
+    TEXTURE_SOUTH,
+    TEXTURE_WEST,
+    TEXTURE_EAST
+};
 
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_strdup(char *s);

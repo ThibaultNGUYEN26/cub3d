@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/11 21:40:14 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/11 22:41:39 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,12 @@ t_data	*ft_launch_map(char *map)
 		close(fd);
 		exit(EXIT_FAILURE);
 	}
+	/* if (!ft_parsing(data))
+	{
+		close(fd);
+		exit(EXIT_FAILURE);
+	} */
 	printf(GREEN "[INFO]" YELLOW " Opening map...\n" EOC);
-	ft_parsing(data);
 	close(fd);
 	return (data);
 }

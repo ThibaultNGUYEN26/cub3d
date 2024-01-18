@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:37:38 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/11 02:01:50 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/16 21:03:58 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ static void drawVerticalLine(t_data *data, int x, int drawStart, int drawEnd, in
 }
 
 void performRaycasting(t_data *data) {
-    int color;
-	int floorColor = 0x006400; // Dark Green
-	int ceilingColor = 0x87CEFA; // Sky Blue
+    // int color;
+	data->floor_color = 0x006400; // Dark Green
+	data->ceiling_color = 0x87CEFA; // Sky Blue
 
-    color = 0x000000;
+    // color = 0x000000;
     for (int x = 0; x < WIDTH; x++) {
         // Calculate position and direction for the ray
         double cameraX = 2 * x / (double)WIDTH - 1; // x-coordinate in camera space
@@ -88,11 +88,11 @@ void performRaycasting(t_data *data) {
                 if (data->tab[mapY][mapX] == '1') { // Note the swap of mapX and mapY
                     hit = 1; // Check for wall character (e.g., '1')
                     // Choose color based on the side hit and the direction
-                    if (side == 0) { // North/South walls
+                    /* if (side == 0) { // North/South walls
                         color = (stepX > 0) ? 0xFF0000 : 0x00FF00; // East/West facing walls
                     } else { // East/West walls
                         color = (stepY > 0) ? 0x0000FF : 0xFFFF00; // North/South facing walls
-                    }
+                    } */
                 }
             } else {
                 hit = 1; // If out of bounds, treat it as a wall hit to prevent infinite loop
@@ -113,15 +113,41 @@ void performRaycasting(t_data *data) {
         if (drawEnd >= HEIGHT) drawEnd = HEIGHT - 1;
 
         // Draw the pixels of the stripe as a vertical line
-        drawVerticalLine(data, x, drawStart, drawEnd, color);
+        // drawVerticalLine(data, x, drawStart, drawEnd, color);
+
+        int texIndex;
+        if (side == 0) texIndex = (stepX > 0) ? TEXTURE_EAST : TEXTURE_WEST;
+        else texIndex = (stepY > 0) ? TEXTURE_SOUTH : TEXTURE_NORTH;
+
+        double wallX; 
+        if (side == 0) wallX = data->player->posY + perpWallDist * rayDirY;
+        else wallX = data->player->posX + perpWallDist * rayDirX;
+        wallX -= floor(wallX);
+        int texWidth = data->texture[texIndex].width;
+
+        // x coordinate on the texture
+        int texX = (int)(wallX * (double)texWidth);
+        if(side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
+        if(side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
+
+        for (int y = drawStart; y < drawEnd; y++) {
+            int d = y * 256 - HEIGHT * 128 + lineHeight * 128;  // Avoiding floating-point arithmetic
+            int texY = (d / lineHeight) * (data->texture[texIndex].height / 256);
+            if (texY < 0) texY = 0;
+            if (texY >= data->texture[texIndex].height) texY = data->texture[texIndex].height - 1;
+            
+            int color = data->texture[texIndex].data[texY * data->texture[texIndex].width + texX];
+            drawVerticalLine(data, x, y, y + 1, color);
+        }
+
 		
 		for (int y = 0; y < HEIGHT; y++) {
             if (y < drawStart) {
                 // Above the wall, draw the ceiling
-                drawVerticalLine(data, x, y, y + 1, ceilingColor);
+                drawVerticalLine(data, x, y, y + 1, data->ceiling_color);
             } else if (y > drawEnd) {
                 // Below the wall, draw the floor
-                drawVerticalLine(data, x, y, y + 1, floorColor);
+                drawVerticalLine(data, x, y, y + 1, data->floor_color);
             }
         }
     }

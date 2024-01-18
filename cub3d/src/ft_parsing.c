@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 17:12:49 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/05 23:33:05 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/12 22:22:57 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@ static int	ft_last_in_line(char *line)
 		- si le premier element dans une ligne est autre qu'un 1
 		- si le dernier element dans une ligne est autre qu'un 1
 */
-static int	ft_surroundings(t_data *data)
+static int	ft_surroundings(t_data *data, int line)
 {
 	int	i;
 	int	j;
 	int	index;
 
 	i = 0;
+	(void)line;
 	while (i < data->nb_lines)
 	{
 		// soit la premiere ligne ou la derniere
@@ -103,6 +104,165 @@ static int	ft_check_player(t_data *data)
 	if (!player)
 	{
 		printf(RED "[ERROR]" YELLOW " No player\n" EOC);
+		return (1);
+	}
+	return (1);
+}
+
+static int	ft_white_spaces(char *s)
+{
+	int	i;
+
+	i = -1;
+	while (s[++i])
+		if (s[i] != '\f' && s[i] != '\t' && s[i] != '\n' && s[i] != '\r' && s[i] != '\v' && s[i] != ' ')
+			return (0);
+	return (1);
+}
+
+
+/* TEXTURES PARSING */
+static int	ft_check_textures(t_data *data, int i, int j, char *s2)
+{
+	int	end;
+	
+	end = j;
+	if (data->tab[i][j] != '.' || data->tab[i][j + 1] != '/')
+	{
+		printf(RED "[ERROR]" YELLOW " Texures are not well formated\n" EOC);	
+		return (0);
+	}
+	while (data->tab[i][end] != '\0' && (data->tab[i][end] == '\f' || data->tab[i][end] == '\t' || data->tab[i][end] == '\n' || data->tab[i][end] == '\r' || data->tab[i][end] == '\v' || data->tab[i][end] == ' '))
+		end++;
+	if (!ft_strcmp(s2, "NO"))
+		data->texture->t_north = ft_substr(data->tab[i], j, end - j);
+	else if (!ft_strcmp(s2, "SO"))
+		data->texture->t_south = ft_substr(data->tab[i], j, end - j);
+	else if (!ft_strcmp(s2, "EA"))
+		data->texture->t_east = ft_substr(data->tab[i], j, end - j);
+	else if (!ft_strcmp(s2, "WE"))
+		data->texture->t_west = ft_substr(data->tab[i], j, end - j);
+	return (1);
+}
+
+static int	ft_which_tex(t_data *data, int i, char *s2, int *count)
+{
+	int	j = 0;
+	while (data->tab[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\n' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
+		j++;
+	if (ft_strcmp(ft_substr(data->tab[i], j, 2), s2) != 0)
+		return (0);
+	*count += 1;
+	if (*count > 1)
+	{
+		printf(RED "[ERROR]" YELLOW " Too many of the same textures found\n" EOC);
+		return (0);
+	}
+	j += 2;
+	while (data->tab[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\n' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
+		j++;
+	if (!ft_check_textures(data, i, j, s2))
+		return (0);
+	return (1);
+}
+
+static int	ft_textures(t_data *data)
+{
+	int	i;
+	int	no;
+	int	so;
+	int	ea;
+	int	we;
+	
+	no = 0;
+	so = 0;
+	ea = 0;
+	we = 0;
+	i = 0;
+	while (data->tab[i])
+	{	
+		// Getting rid of empty lines
+		while (data->tab[i] && ft_white_spaces(data->tab[i]))
+			i++;
+		if (data->tab[i])
+		{
+			if (!ft_which_tex(data, i, "NO", &no))
+				return (0);
+			else if (!ft_which_tex(data, i, "SO", &so))
+				return (0);
+			else if (!ft_which_tex(data, i, "WE", &we))
+				return (0);
+			else if (!ft_which_tex(data, i, "EA", &ea))
+				return (0);
+			i++;
+		}
+	}
+	if (no == 0 || so == 0 || ea == 0 || we == 0)
+	{
+		printf(RED "[ERROR]" YELLOW " Not all of the textures have been found\n" EOC);
+		return (0);
+	}
+	return (1);
+}
+
+/* FLOOR AND CEILING COLORS */
+static int	ft_check_rgb(t_data *data, int i, int j, char *s2)
+{
+	(void)data;
+	(void)i;
+	(void)j;
+	(void)s2;
+	return (1);
+}
+
+static int	ft_which_element(t_data *data, int i, char *s2, int *count)
+{
+	int	j = 0;
+	while (data->tab[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\n' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
+		j++;
+	if (ft_strcmp(ft_substr(data->tab[i], j, 1), s2) != 0)
+		return (0);
+	*count += 1;
+	if (*count > 1)
+	{
+		printf(RED "[ERROR]" YELLOW " Too many of the same elements found\n" EOC);
+		return (0);
+	}
+	j += 1;
+	while (data->tab[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\n' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
+		j++;
+	if (!ft_check_rgb(data, i, j, s2))
+		return (0);
+	return (1);
+}
+
+static int	ft_floor_ceiling(t_data *data, int line_textures)
+{
+	(void)line_textures;
+	int	i;
+	int	f;
+	int	c;
+	
+	f = 0;
+	c = 0;
+	i = 0;
+	while (data->tab[i])
+	{	
+		// Getting rid of empty lines
+		while (data->tab[i] && ft_white_spaces(data->tab[i]))
+			i++;
+		if (data->tab[i])
+		{
+			if (!ft_which_element(data, i, "F", &f))
+				return (0);
+			else if (!ft_which_tex(data, i, "C", &c))
+				return (0);
+			i++;
+		}
+	}
+	if (f == 0 || c == 0)
+	{
+		printf(RED "[ERROR]" YELLOW " Not all of the elements have been found\n" EOC);
 		return (0);
 	}
 	return (1);
@@ -110,7 +270,18 @@ static int	ft_check_player(t_data *data)
 
 int	ft_parsing(t_data *data)
 {
-	if (!ft_surroundings(data))
+	int line_textures = 0;
+	if (!ft_textures(data))
+	{
+		printf(RED "[ERROR]" YELLOW " Texures are not well formated\n" EOC);
+		return (0);
+	}
+	if (!ft_floor_ceiling(data, line_textures))
+	{
+		printf(RED "[ERROR]" YELLOW " Floor/Ceiling colors are not well formated\n" EOC);
+		return (0);
+	}
+	if (!ft_surroundings(data, 0))
 	{
 		printf(RED "[ERROR]" YELLOW " Walls are not closed\n" EOC);
 		return (0);
