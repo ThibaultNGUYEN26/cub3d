@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:37:38 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/18 21:13:59 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:30:40 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ void performRaycasting(t_data *data) {
 
         // x coordinate on the texture
         int texX = (int)(wallX * (double)texWidth);
-        if(side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
-        if(side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
+        if(side == 0 && rayDirX < 0) texX = texWidth - texX - 1;
+        if(side == 1 && rayDirY > 0) texX = texWidth - texX - 1;
 
         for (int y = drawStart; y < drawEnd; y++) {
             int d = y * 256 - HEIGHT * 128 + lineHeight * 128;  // Avoiding floating-point arithmetic
