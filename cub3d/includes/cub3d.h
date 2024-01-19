@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/16 21:03:02 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:30:45 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,9 @@ typedef struct	s_data
 	int			key;
 	int			nb_lines;
 	int			longest_line;
+	int			nb_lines_file;
+	int			longest_line_file;
+	char		**file;
 	char		**tab;
 	int			key_status[NUM_KEYS];
 	int			floor_color;
@@ -110,8 +113,10 @@ char		*ft_strdup(char *s);
 char		*ft_strjoin(char *s1, char *s2);
 int			ft_strlen(char *s);
 char		*ft_substr(char *s, int start, int len);
+int			ft_atoi(char *str);
 
 t_data		*ft_launch_map(char *map);
+int			ft_white_spaces(char *s);
 t_data		*ft_count_file_lines(ssize_t bytes_read, char *buffer);
 int			ft_fill_tab(t_data *data, char *buffer);
 void		ft_free_tab(t_data *data);

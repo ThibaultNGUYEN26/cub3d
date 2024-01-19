@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 17:12:49 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/18 20:10:06 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:01:22 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,42 +28,22 @@ static int	ft_last_in_line(char *line)
 	return (index);
 }
 
-static int	ft_white_spaces(char *s)
-{
-	int	i;
-
-	i = -1;
-	while (s[++i])
-		if (s[i] != '\f' && s[i] != '\t' && s[i] != '\n' && s[i] != '\r' && s[i] != '\v' && s[i] != ' ')
-			return (0);
-	return (1);
-}
-
 /* CAS D'ERREUR :
 		- si la 1ere ou derniere ligne a autre chose que des 1 ou des espaces
 		- si le premier element dans une ligne est autre qu'un 1
 		- si le dernier element dans une ligne est autre qu'un 1
 */
 static int	ft_surroundings(t_data *data)
-{
-	int	end;
+{	
 	int	i;
 	int	j;
 	int	index;
 
-	i = data->nb_lines - 1;
-	while (i >= 0 && ft_white_spaces(data->tab[i]))
-		i--;
-	end = i;
-	while (i >= 0 && !ft_white_spaces(data->tab[i]))
-		i--;
-	if (end == 0 || i == 0)
-		return (0);
-	i++;
-	while (i < end)
+	i = 0;
+	while (i < data->nb_lines)
 	{
 		// soit la premiere ligne ou la derniere
-		if (i == 0 || i == end)
+		if (i == 0 || i == data->nb_lines - 1)
 		{
 			j = 0;
 			while (j < data->longest_line)
@@ -86,7 +66,6 @@ static int	ft_surroundings(t_data *data)
 	}
 	return (1);
 }
-
 
 static int	ft_check_player(t_data *data)
 {
@@ -134,30 +113,30 @@ static int	ft_check_textures(t_data *data, int i, int j, char *s2)
 	int	end;
 	
 	end = j;
-	if (data->tab[i][j] != '.' || data->tab[i][j + 1] != '/')
+	if (data->file[i][j] != '.' || data->file[i][j + 1] != '/')
 	{
 		printf(RED "[ERROR]" YELLOW " Texures are not well formated\n" EOC);	
 		return (0);
 	}
-	while (data->tab[i][end] != '\0' && (data->tab[i][end] == '\f' || data->tab[i][end] == '\t' || data->tab[i][end] == '\n' || data->tab[i][end] == '\r' || data->tab[i][end] == '\v' || data->tab[i][end] == ' '))
+	while (data->file[i][end] != '\0' && (data->file[i][end] !='\f' && data->file[i][end] != '\t' && data->file[i][end] != '\r' && data->file[i][end] != '\v' && data->file[i][end] != ' '))
 		end++;
 	if (!ft_strcmp(s2, "NO"))
-		data->texture->t_north = ft_substr(data->tab[i], j, end - j);
+		data->texture->t_north = ft_substr(data->file[i], j, end - j);
 	else if (!ft_strcmp(s2, "SO"))
-		data->texture->t_south = ft_substr(data->tab[i], j, end - j);
+		data->texture->t_south = ft_substr(data->file[i], j, end - j);
 	else if (!ft_strcmp(s2, "EA"))
-		data->texture->t_east = ft_substr(data->tab[i], j, end - j);
+		data->texture->t_east = ft_substr(data->file[i], j, end - j);
 	else if (!ft_strcmp(s2, "WE"))
-		data->texture->t_west = ft_substr(data->tab[i], j, end - j);
+		data->texture->t_west = ft_substr(data->file[i], j, end - j);
 	return (1);
 }
 
 static int	ft_which_tex(t_data *data, int i, char *s2, int *count)
 {
 	int	j = 0;
-	while (data->tab[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\n' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
+	while (data->file[i][j] != '\0' && (data->file[i][j] == '\f' || data->file[i][j] == '\t' || data->file[i][j] == '\r' || data->file[i][j] == '\v' || data->file[i][j] == ' '))
 		j++;
-	if (ft_strcmp(ft_substr(data->tab[i], j, 2), s2) != 0)
+	if (ft_strcmp(ft_substr(data->file[i], j, 2), s2) != 0)
 		return (0);
 	*count += 1;
 	if (*count > 1)
@@ -166,7 +145,7 @@ static int	ft_which_tex(t_data *data, int i, char *s2, int *count)
 		return (0);
 	}
 	j += 2;
-	while (data->tab[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\n' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
+	while (data->file[i][j] != '\0' && (data->file[i][j] == '\f' || data->file[i][j] == '\t' || data->file[i][j] == '\r' || data->file[i][j] == '\v' || data->file[i][j] == ' '))
 		j++;
 	if (!ft_check_textures(data, i, j, s2))
 		return (0);
@@ -186,12 +165,12 @@ static int	ft_textures(t_data *data)
 	ea = 0;
 	we = 0;
 	i = 0;
-	while (data->tab[i])
+	while (data->file[i])
 	{	
 		// Getting rid of empty lines
-		while (data->tab[i] && ft_white_spaces(data->tab[i]))
+		while (data->file[i] && ft_white_spaces(data->file[i]))
 			i++;
-		if (data->tab[i])
+		if (data->file[i])
 		{
 			if (!ft_which_tex(data, i, "NO", &no))
 				return (0);
@@ -212,20 +191,63 @@ static int	ft_textures(t_data *data)
 	return (1);
 }
 
-/* FLOOR AND CEILING COLORS */
-static int	ft_check_rgb(t_data *data, int i, int j, char *s2)
+/* Convert RGB to hexadecimal */
+static unsigned int	ft_convert_color(int r, int g, int b)
 {
-	(void)data;
-	(void)i;
-	(void)j;
-	(void)s2;
+	return ((r << 16) | (g << 8) | b);
+}
+
+/* FLOOR AND CEILING COLORS */
+static int	ft_check_rgb(t_data *data, char *s1, int j, char *s2)
+{
+	int		r;
+	int		g;
+	int		b;
+	int		count;
+	int		number;
+	int		index;
+	char	*str;
+
+	count = 0;
+	while (count < 3)
+	{
+		if (s1[j] == ',')
+			count++;
+		else if (s1[j] >= '0' && s1[j] <= '9')
+		{
+			index = j;
+			while (s1[index] >= '0' && s1[index] <= '9')
+				index++;
+			str = ft_substr(s1, j, index - j + 1);
+			number = ft_atoi(str);
+			if (number < 0 || number > 255)
+				return (0);
+			free(str);
+			if (count == 0)
+				r = number;
+			else if (count == 1)
+				g = number;
+			else if (count == 2)
+				b = number;
+		}
+		else
+			return (0);
+	}
+	if (count > 2)
+		return (0);
+	if (!ft_strcmp(s2, "F"))
+		data->floor_color = ft_convert_color(r, g, b);
+	else if (!ft_strcmp(s2, "C"))
+		data->ceiling_color = ft_convert_color(r, g, b);
 	return (1);
 }
 
 static int	ft_which_element(t_data *data, int i, char *s2, int *count)
 {
-	int	j = 0;
-	while (data->tab[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\n' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
+	int	j;
+
+	j = 0;
+	while (data->file[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
 		j++;
 	if (ft_strcmp(ft_substr(data->tab[i], j, 1), s2) != 0)
 		return (0);
@@ -236,9 +258,9 @@ static int	ft_which_element(t_data *data, int i, char *s2, int *count)
 		return (0);
 	}
 	j += 1;
-	while (data->tab[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\n' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
+	while (data->tab[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
 		j++;
-	if (!ft_check_rgb(data, i, j, s2))
+	if (!ft_check_rgb(data, data->tab[i], j, s2))
 		return (0);
 	return (1);
 }
@@ -253,12 +275,12 @@ static int	ft_floor_ceiling(t_data *data, int line_textures)
 	f = 0;
 	c = 0;
 	i = 0;
-	while (data->tab[i])
+	while (data->file[i])
 	{	
 		// Getting rid of empty lines
-		while (data->tab[i] && ft_white_spaces(data->tab[i]))
+		while (data->file[i] && ft_white_spaces(data->file[i]))
 			i++;
-		if (data->tab[i])
+		if (data->file[i])
 		{
 			if (!ft_which_element(data, i, "F", &f))
 				return (0);
