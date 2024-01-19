@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 17:12:49 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/19 16:01:22 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:25:09 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,21 +166,19 @@ static int	ft_textures(t_data *data)
 	we = 0;
 	i = 0;
 	while (data->file[i])
-	{	
+	{
 		// Getting rid of empty lines
 		while (data->file[i] && ft_white_spaces(data->file[i]))
 			i++;
 		if (data->file[i])
 		{
-			if (!ft_which_tex(data, i, "NO", &no))
-				return (0);
-			else if (!ft_which_tex(data, i, "SO", &so))
-				return (0);
-			else if (!ft_which_tex(data, i, "WE", &we))
-				return (0);
-			else if (!ft_which_tex(data, i, "EA", &ea))
-				return (0);
-			i++;
+			if (ft_which_tex(data, i, "NO", &no) ||
+				ft_which_tex(data, i, "SO", &so) ||
+				ft_which_tex(data, i, "WE", &we) ||
+				ft_which_tex(data, i, "EA", &ea))
+				i++;
+			else
+				i++;
 		}
 	}
 	if (no == 0 || so == 0 || ea == 0 || we == 0)
@@ -188,6 +186,10 @@ static int	ft_textures(t_data *data)
 		printf(RED "[ERROR]" YELLOW " Not all of the textures have been found\n" EOC);
 		return (0);
 	}
+	printf("NO : %s\n", data->texture->t_north);
+	printf("SO : %s\n", data->texture->t_south);
+	printf("WE : %s\n", data->texture->t_west);
+	printf("EA : %s\n", data->texture->t_east);
 	return (1);
 }
 
@@ -209,10 +211,16 @@ static int	ft_check_rgb(t_data *data, char *s1, int j, char *s2)
 	char	*str;
 
 	count = 0;
-	while (count < 3)
+	r = 0;
+	g = 0;
+	b = 0;
+	while (count < 3 && s1[j])
 	{
 		if (s1[j] == ',')
+		{
 			count++;
+			j++;
+		}
 		else if (s1[j] >= '0' && s1[j] <= '9')
 		{
 			index = j;
@@ -223,6 +231,7 @@ static int	ft_check_rgb(t_data *data, char *s1, int j, char *s2)
 			if (number < 0 || number > 255)
 				return (0);
 			free(str);
+			j = index;
 			if (count == 0)
 				r = number;
 			else if (count == 1)
@@ -247,9 +256,10 @@ static int	ft_which_element(t_data *data, int i, char *s2, int *count)
 	int	j;
 
 	j = 0;
-	while (data->file[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
+	while (data->file[i][j] != '\0' && (data->file[i][j] == '\f' || data->file[i][j] == '\t' || data->file[i][j] == '\r' || data->file[i][j] == '\v' || data->file[i][j] == ' '))
 		j++;
-	if (ft_strcmp(ft_substr(data->tab[i], j, 1), s2) != 0)
+	printf("str : %s, substr : %s\n", data->file[i], ft_substr(data->file[i], j, 1));
+	if (ft_strcmp(ft_substr(data->file[i], j, 1), s2) != 0)
 		return (0);
 	*count += 1;
 	if (*count > 1)
@@ -258,9 +268,9 @@ static int	ft_which_element(t_data *data, int i, char *s2, int *count)
 		return (0);
 	}
 	j += 1;
-	while (data->tab[i][j] != '\0' && (data->tab[i][j] == '\f' || data->tab[i][j] == '\t' || data->tab[i][j] == '\r' || data->tab[i][j] == '\v' || data->tab[i][j] == ' '))
+	while (data->file[i][j] != '\0' && (data->file[i][j] == '\f' || data->file[i][j] == '\t' || data->file[i][j] == '\r' || data->file[i][j] == '\v' || data->file[i][j] == ' '))
 		j++;
-	if (!ft_check_rgb(data, data->tab[i], j, s2))
+	if (!ft_check_rgb(data, data->file[i], j, s2))
 		return (0);
 	return (1);
 }
@@ -282,11 +292,10 @@ static int	ft_floor_ceiling(t_data *data, int line_textures)
 			i++;
 		if (data->file[i])
 		{
-			if (!ft_which_element(data, i, "F", &f))
-				return (0);
-			else if (!ft_which_tex(data, i, "C", &c))
-				return (0);
-			i++;
+			if (ft_which_element(data, i, "F", &f) || ft_which_element(data, i, "C", &c))
+				i++;
+			else
+				i++;
 		}
 	}
 	if (f == 0 || c == 0)
@@ -294,6 +303,8 @@ static int	ft_floor_ceiling(t_data *data, int line_textures)
 		printf(RED "[ERROR]" YELLOW " Not all of the elements have been found\n" EOC);
 		return (0);
 	}
+	printf("F : %d\n", data->floor_color);
+	printf("C : %d\n", data->ceiling_color);
 	return (1);
 }
 
@@ -307,7 +318,7 @@ int	ft_parsing(t_data *data)
 	}
 	if (!ft_textures(data))
 	{
-		printf(RED "[ERROR]" YELLOW " Texures are not well formated\n" EOC);
+		printf(RED "[ERROR]" YELLOW " Texture Failure\n" EOC);
 		return (0);
 	}
 	if (!ft_floor_ceiling(data, line_textures))

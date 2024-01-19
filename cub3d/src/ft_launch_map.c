@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/19 16:04:00 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:41:50 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,10 @@ static int	ft_check_extension(char *map)
 void	ft_print_tab(t_data *data)
 {
 	printf("FOR FILE :\n");
-	printf("longest_line_file : %d\n", data->longest_line_file);
 	printf("nb_lines_file : %d\n", data->nb_lines_file);
 	for (int i = 0; i < data->nb_lines_file; i++)
 	{
-		for (int j = 0; j < data->longest_line_file; j++)
-			printf("%c", data->tab[i][j]);
-		printf("\n");
+		printf("%s\n", data->file[i]);
 	}
 	printf("FOR TAB :\n");
 	printf("mapWidth %d\n", data->longest_line);
@@ -103,19 +100,19 @@ t_data	*ft_launch_map(char *map)
 		close(fd);
 		exit(EXIT_FAILURE);
 	}
-	ft_print_tab(data);
+	//ft_print_tab(data);
 	if (len == -1)
 	{
 		perror(RED "[ERROR]" YELLOW " Reading file" EOC);
 		close(fd);
 		exit(EXIT_FAILURE);
 	}
-	/*
+	
 	if (!ft_parsing(data))
 	{
 		close(fd);
 		exit(EXIT_FAILURE);
-	} */
+	}
 	printf(GREEN "[INFO]" YELLOW " Opening map...\n" EOC);
 	close(fd);
 	return (data);

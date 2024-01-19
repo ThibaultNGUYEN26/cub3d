@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/19 15:30:45 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:15:17 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ typedef struct	s_data
 	int			nb_lines;
 	int			longest_line;
 	int			nb_lines_file;
-	int			longest_line_file;
 	char		**file;
 	char		**tab;
 	int			key_status[NUM_KEYS];

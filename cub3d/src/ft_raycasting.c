@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_raycasting.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:37:38 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/19 15:30:40 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:14:25 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static void drawVerticalLine(t_data *data, int x, int drawStart, int drawEnd, in
 
 void performRaycasting(t_data *data) {
     // int color;
-	data->floor_color = 0x006400; // Dark Green
-	data->ceiling_color = 0x87CEFA; // Sky Blue
+	/* data->floor_color = 0x006400; // Dark Green
+	data->ceiling_color = 0x87CEFA; // Sky Blue */
 
     // color = 0x000000;
     for (int x = 0; x < WIDTH; x++) {
