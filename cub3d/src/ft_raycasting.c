@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:37:38 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/16 21:03:58 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:30:40 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,7 @@ void performRaycasting(t_data *data) {
             // Check if ray has hit a wall
             if (mapX >= 0 && mapX < WIDTH && mapY >= 0 && mapY < HEIGHT) {
                 if (data->tab[mapY][mapX] == '1') { // Note the swap of mapX and mapY
-                    hit = 1; // Check for wall character (e.g., '1')
-                    // Choose color based on the side hit and the direction
-                    /* if (side == 0) { // North/South walls
-                        color = (stepX > 0) ? 0xFF0000 : 0x00FF00; // East/West facing walls
-                    } else { // East/West walls
-                        color = (stepY > 0) ? 0x0000FF : 0xFFFF00; // North/South facing walls
-                    } */
+                    hit = 1;
                 }
             } else {
                 hit = 1; // If out of bounds, treat it as a wall hit to prevent infinite loop
@@ -127,8 +121,8 @@ void performRaycasting(t_data *data) {
 
         // x coordinate on the texture
         int texX = (int)(wallX * (double)texWidth);
-        if(side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
-        if(side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
+        if(side == 0 && rayDirX < 0) texX = texWidth - texX - 1;
+        if(side == 1 && rayDirY > 0) texX = texWidth - texX - 1;
 
         for (int y = drawStart; y < drawEnd; y++) {
             int d = y * 256 - HEIGHT * 128 + lineHeight * 128;  // Avoiding floating-point arithmetic
@@ -139,8 +133,6 @@ void performRaycasting(t_data *data) {
             int color = data->texture[texIndex].data[texY * data->texture[texIndex].width + texX];
             drawVerticalLine(data, x, y, y + 1, color);
         }
-
-		
 		for (int y = 0; y < HEIGHT; y++) {
             if (y < drawStart) {
                 // Above the wall, draw the ceiling
