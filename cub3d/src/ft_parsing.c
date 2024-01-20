@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 17:12:49 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/19 18:25:09 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/20 17:53:58 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static int	ft_check_player(t_data *data)
 			{
 				if (player)
 				{
-					printf(RED "[ERROR]" YELLOW " Too many player\n" EOC);
+					printf(RED "[ERROR]" YELLOW " Too many players\n" EOC);
 					return (0);
 				}
 				player = 1;
@@ -102,7 +102,7 @@ static int	ft_check_player(t_data *data)
 	if (!player)
 	{
 		printf(RED "[ERROR]" YELLOW " No player\n" EOC);
-		return (1);
+		return (0);
 	}
 	return (1);
 }
@@ -258,7 +258,7 @@ static int	ft_which_element(t_data *data, int i, char *s2, int *count)
 	j = 0;
 	while (data->file[i][j] != '\0' && (data->file[i][j] == '\f' || data->file[i][j] == '\t' || data->file[i][j] == '\r' || data->file[i][j] == '\v' || data->file[i][j] == ' '))
 		j++;
-	printf("str : %s, substr : %s\n", data->file[i], ft_substr(data->file[i], j, 1));
+	/* printf("str : %s, substr : %s\n", data->file[i], ft_substr(data->file[i], j, 1));*/
 	if (ft_strcmp(ft_substr(data->file[i], j, 1), s2) != 0)
 		return (0);
 	*count += 1;

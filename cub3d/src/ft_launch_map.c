@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_launch_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/19 17:41:50 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/20 17:50:43 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ void	ft_print_tab(t_data *data)
 	printf("FOR FILE :\n");
 	printf("nb_lines_file : %d\n", data->nb_lines_file);
 	for (int i = 0; i < data->nb_lines_file; i++)
-	{
 		printf("%s\n", data->file[i]);
-	}
 	printf("FOR TAB :\n");
 	printf("mapWidth %d\n", data->longest_line);
 	printf("mapHeight %d\n", data->nb_lines);
@@ -100,7 +98,7 @@ t_data	*ft_launch_map(char *map)
 		close(fd);
 		exit(EXIT_FAILURE);
 	}
-	//ft_print_tab(data);
+	ft_print_tab(data);
 	if (len == -1)
 	{
 		perror(RED "[ERROR]" YELLOW " Reading file" EOC);

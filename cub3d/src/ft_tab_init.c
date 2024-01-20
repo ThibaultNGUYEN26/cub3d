@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tab_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:06:22 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/19 17:38:58 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/20 18:08:20 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ static int	ft_fill_map(t_data *data, char **temp, int start)
 			k++;
 		}
 		start++;
-		printf("%s\n", data->tab[i]);
 	}
 	data->tab[i] = NULL;
 	return (1);
@@ -149,19 +148,31 @@ int	ft_fill_tab(t_data *data, char *buffer)
 				break;
 			}
 		}
-		printf("%s\n", temp[i]);
+		/* printf("%s\n", temp[i]); */
 	}
 	temp[i] = NULL;
 	end = data->nb_lines_file - 1;
+	printf("end avant sa boucle : %d\n", end);
 	while (end >= 0 && ft_white_spaces(temp[end]))
 		end--;
 	if (end < 0)
+	{
+		printf("ligne 159 failure\n");
 		return (0);
+	}
 	start = end;
 	while (start >= 0 && !ft_white_spaces(temp[start]))
 		start--;
+	/* if (ft_white_spaces(temp[start]))
+	{
+		while ()
+	} */
 	if (start < 0)
+	{
+		printf("start : %d, end : %d, temp[end] : %s\n", start, end, temp[end]);
+		printf("ligne 171 failure\n");
 		return (0);
+	}
 	start++;
 	data->nb_lines = end - start + 1;
 	printf("data->nb_lines : %d\n", data->nb_lines);
@@ -177,7 +188,7 @@ int	ft_fill_tab(t_data *data, char *buffer)
 		data->file[i] = ft_strdup(temp[i]);
 		if (data->file[i] == NULL)
 			return (0);
-		printf("%s\n", data->file[i]);
+		/* printf("%s\n", data->file[i]); */
 	}
 	data->file[i] = NULL;
 	i = -1;
