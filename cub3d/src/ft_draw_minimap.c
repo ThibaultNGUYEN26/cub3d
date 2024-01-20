@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 01:49:10 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/19 15:48:03 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/20 20:58:33 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,9 @@ void raycastMinimap(t_data *data) {
 
     // Adjust the step size for more accurate ray casting
     double stepSize = 0.01; // Adjust this value as needed
-    double maxRayLength = 5.0; // Adjust based on your map size
 
     // Iterate through rays within the FOV
-    double fov = M_PI / 4; // Example: 45 degrees FOV
+    double fov = 60 * (M_PI / 180); // 60 degrees FOV in radians
     for (double angle = -fov / 2; angle <= fov / 2; angle += stepSize) {
         double rayDirX = dirX * cos(angle) - dirY * sin(angle);
         double rayDirY = dirX * sin(angle) + dirY * cos(angle);
@@ -82,10 +81,8 @@ void raycastMinimap(t_data *data) {
         double mapX = posX;
         double mapY = posY;
 
-        double rayLength = 0.0; // Initialize ray length
-
         // Ray casting loop
-        while (data->tab[(int)mapY][(int)mapX] != '1' && rayLength < maxRayLength) {
+        while (data->tab[(int)mapY][(int)mapX] != '1') { // Continue until a wall is hit
             mapX += rayDirX * stepSize;
             mapY += rayDirY * stepSize;
 
@@ -101,10 +98,10 @@ void raycastMinimap(t_data *data) {
             if (minimapIndexX >= 0 && minimapIndexX < minimap_width && minimapIndexY >= 0 && minimapIndexY < minimap_height) {
                 int minimapIndex = minimapIndexY * minimap_width + minimapIndexX;
                 img[minimapIndex] = 0xFF0000; // Set pixel color for the ray
+            } else {
+                // If the ray goes out of bounds, stop casting this ray
+                break;
             }
-
-            // Update ray length
-            rayLength += stepSize;
         }
     }
 }
