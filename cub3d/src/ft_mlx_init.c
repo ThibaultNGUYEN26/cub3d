@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_mlx_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:28:33 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/18 20:52:57 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:14:40 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,10 @@ void	ft_mlx_init(t_data *data)
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length, &data->endian);
 	data->minimap_img = NULL;
 	data->prev_mouse_x = -1;
-    data->texture->t_north = "./textures/42.xpm";
+    /* data->texture->t_north = "./textures/42.xpm";
     data->texture->t_south = "./textures/peach.xpm";
     data->texture->t_west = "./textures/luigi.xpm";
-    data->texture->t_east = "./textures/bowser.xpm";
+    data->texture->t_east = "./textures/bowser.xpm"; */
     loadTexture(data, TEXTURE_NORTH, data->texture->t_north);
     loadTexture(data, TEXTURE_SOUTH, data->texture->t_south);
     loadTexture(data, TEXTURE_WEST, data->texture->t_west);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
+#    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/11 21:01:49 by thibault         ###   ########.fr        #
+#    Updated: 2024/01/19 15:31:01 by rchbouki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRCS		=	libft/ft_strcmp.c \
 				libft/ft_strjoin.c \
 				libft/ft_strlen.c \
 				libft/ft_substr.c \
+				libft/ft_atoi.c \
 				ft_launch_map.c \
 				ft_tab_init.c \
 				ft_mlx_init.c \

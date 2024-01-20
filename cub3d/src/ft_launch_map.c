@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_launch_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/11 22:41:39 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:41:50 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ static int	ft_check_extension(char *map)
 
 void	ft_print_tab(t_data *data)
 {
+	printf("FOR FILE :\n");
+	printf("nb_lines_file : %d\n", data->nb_lines_file);
+	for (int i = 0; i < data->nb_lines_file; i++)
+	{
+		printf("%s\n", data->file[i]);
+	}
+	printf("FOR TAB :\n");
 	printf("mapWidth %d\n", data->longest_line);
 	printf("mapHeight %d\n", data->nb_lines);
 	for (int i = 0; i < data->nb_lines; i++)
@@ -88,24 +95,24 @@ t_data	*ft_launch_map(char *map)
 	{
 		printf(RED "[ERROR]" YELLOW " Allocation failure\n" EOC);
 		ft_free_tab(data);
+		free(data->file);
 		free(data);
-		free(buffer);
 		close(fd);
 		exit(EXIT_FAILURE);
 	}
-	free(buffer);
-	ft_print_tab(data);
+	//ft_print_tab(data);
 	if (len == -1)
 	{
 		perror(RED "[ERROR]" YELLOW " Reading file" EOC);
 		close(fd);
 		exit(EXIT_FAILURE);
 	}
-	/* if (!ft_parsing(data))
+	
+	if (!ft_parsing(data))
 	{
 		close(fd);
 		exit(EXIT_FAILURE);
-	} */
+	}
 	printf(GREEN "[INFO]" YELLOW " Opening map...\n" EOC);
 	close(fd);
 	return (data);
