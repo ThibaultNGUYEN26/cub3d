@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 23:34:14 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/22 19:34:49 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/23 19:14:48 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,28 @@ static int mapCollision(t_data *data, double newX, double newY)
     if (mapX < 0 || mapX >= WIDTH || mapY < 0 || mapY >= HEIGHT)
         return 1; // Collision with out-of-bounds
 
-    // Check if the new position collides with a wall (assuming '1' represents a wall in your map)
+    // Check if the new position collides with a wall
     if (data->tab[mapY][mapX] == '1')
         return 1; // Collision with a wall
+
+    // Enhanced check for diagonal collision
+    double threshold = 0.07; // Adjust this threshold for sensitivity of diagonal collision
+    double fracX = newX - mapX;
+    double fracY = newY - mapY;
+
+    if ((fracX > 1 - threshold || fracX < threshold) && 
+        (fracY > 1 - threshold || fracY < threshold)) {
+        // Check adjacent cells for diagonal collision
+        int adjX = (fracX > 1 - threshold) ? 1 : -1;
+        int adjY = (fracY > 1 - threshold) ? 1 : -1;
+
+        if (mapX + adjX >= 0 && mapX + adjX < WIDTH && 
+            mapY + adjY >= 0 && mapY + adjY < HEIGHT) {
+            if (data->tab[mapY][mapX + adjX] == '1' && data->tab[mapY + adjY][mapX] == '1') {
+                return 1; // Diagonal collision detected
+            }
+        }
+    }
 
     // If there's no collision, return 0
     return 0;

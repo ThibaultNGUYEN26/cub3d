@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:37:38 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/20 17:40:05 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/23 19:03:05 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,15 +123,17 @@ void performRaycasting(t_data *data) {
         int texWidth = data->texture[texIndex].width;
 
         // x coordinate on the texture
-        int texX = (int)(wallX * (double)texWidth);
-        if(side == 0 && rayDirX < 0) texX = texWidth - texX - 1;
-        if(side == 1 && rayDirY > 0) texX = texWidth - texX - 1;
-
+        int texX = (int)(wallX * (double)(texWidth));
+        if((side == 0 && rayDirX < 0) || (side == 1 && rayDirY > 0)) {
+            texX = texWidth - texX - 1;
+        }
+        texX = texX % texWidth;
+        int texHeight = data->texture[texIndex].height;
         for (int y = drawStart; y < drawEnd; y++) {
-            int d = y * 256 - HEIGHT * 128 + lineHeight * 128;  // Avoiding floating-point arithmetic
-            int texY = (d / lineHeight) * (data->texture[texIndex].height / 256);
+            int d = y * 256 - HEIGHT * 128 + lineHeight * 128;
+            int texY = (d / lineHeight) * (texHeight / 256);
             if (texY < 0) texY = 0;
-            if (texY >= data->texture[texIndex].height) texY = data->texture[texIndex].height - 1;
+            if (texY >= texHeight) texY = texHeight - 1;
             
             int color = data->texture[texIndex].data[texY * data->texture[texIndex].width + texX];
             drawVerticalLine(data, x, y, y + 1, color);
