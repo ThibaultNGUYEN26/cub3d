@@ -6,15 +6,33 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 01:49:10 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/20 20:58:33 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:58:16 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
+static int  ft_longest_line(t_data *data)
+{
+    int i;
+    int j;
+    int longest;
+
+    longest = 0;
+    i = -1;
+    while (++i < data->nb_lines)
+    {
+        j = ft_strlen(data->tab[i]);
+        if (longest < j)
+            longest = j;
+    }
+    return (longest);
+}
+
 void draw_minimap(t_data *data) {
+    int longest = ft_longest_line(data);
     // Calculate the aspect ratio of the map and the size of the minimap
-    double map_aspect_ratio = (double)data->longest_line / (double)data->nb_lines;
+    double map_aspect_ratio = (double)longest / (double)data->nb_lines;
     int minimap_width = MAP_SIZE;
     int minimap_height = (int)(MAP_SIZE / map_aspect_ratio);
 
@@ -31,7 +49,7 @@ void draw_minimap(t_data *data) {
     for (int y = 0; y < minimap_height; y++) {
         for (int x = 0; x < minimap_width; x++) {
             // Calculate the corresponding map coordinate
-            int map_x = (int)(x * (data->longest_line / (double)minimap_width));
+            int map_x = (int)(x * (longest / (double)minimap_width));
             int map_y = (int)(y * (data->nb_lines / (double)minimap_height));
 
             // Draw walls and empty spaces differently
@@ -41,7 +59,7 @@ void draw_minimap(t_data *data) {
     }
 
     // Draw the player on the minimap
-    int player_minimap_x = (int)(data->player->posX * (minimap_width / (double)data->longest_line));
+    int player_minimap_x = (int)(data->player->posX * (minimap_width / (double)longest));
     int player_minimap_y = (int)(data->player->posY * (minimap_height / (double)data->nb_lines));
 
     // Check bounds for player position on minimap
@@ -64,9 +82,10 @@ void raycastMinimap(t_data *data) {
     double posY = data->player->posY;
     double dirX = data->player->dirX;
     double dirY = data->player->dirY;
+    int longest = ft_longest_line(data);
     
     int minimap_width = MAP_SIZE; // Use the actual minimap width
-    int minimap_height = (int)(MAP_SIZE / ((double)data->longest_line / (double)data->nb_lines)); // Use the actual minimap height
+    int minimap_height = (int)(MAP_SIZE / ((double)longest / (double)data->nb_lines)); // Use the actual minimap height
     int *img = (int *)data->minimap_addr;
 
     // Adjust the step size for more accurate ray casting
@@ -87,11 +106,11 @@ void raycastMinimap(t_data *data) {
             mapY += rayDirY * stepSize;
 
             // Calculate the corresponding minimap coordinates relative to the player's position
-            int minimapX = (int)((mapX - posX) * (minimap_width / (double)data->longest_line));
+            int minimapX = (int)((mapX - posX) * (minimap_width / (double)longest));
             int minimapY = (int)((mapY - posY) * (minimap_height / (double)data->nb_lines));
 
             // Calculate the position on the minimap to draw the ray
-            int minimapIndexX = (int)(data->player->posX * (minimap_width / (double)data->longest_line)) + minimapX;
+            int minimapIndexX = (int)(data->player->posX * (minimap_width / (double)longest)) + minimapX;
             int minimapIndexY = (int)(data->player->posY * (minimap_height / (double)data->nb_lines)) + minimapY;
 
             // Check bounds for minimap position

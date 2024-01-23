@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:37:38 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/20 20:26:12 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/23 19:03:05 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void performRaycasting(t_data *data) {
         int texHeight = data->texture[texIndex].height;
         for (int y = drawStart; y < drawEnd; y++) {
             int d = y * 256 - HEIGHT * 128 + lineHeight * 128;
-            int texY = ((d * texHeight) / lineHeight) / 256;
+            int texY = (d / lineHeight) * (texHeight / 256);
             if (texY < 0) texY = 0;
             if (texY >= texHeight) texY = texHeight - 1;
             

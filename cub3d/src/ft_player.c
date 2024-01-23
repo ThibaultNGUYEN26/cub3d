@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 23:34:14 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/20 19:57:30 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/23 19:10:07 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int mapCollision(t_data *data, double newX, double newY)
         return 1; // Collision with a wall
 
     // Enhanced check for diagonal collision
-    double threshold = 0.1; // Adjust this threshold for sensitivity of diagonal collision
+    double threshold = 0.07; // Adjust this threshold for sensitivity of diagonal collision
     double fracX = newX - mapX;
     double fracY = newY - mapY;
 
