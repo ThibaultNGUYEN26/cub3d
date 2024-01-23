@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:10:47 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/11 01:59:58 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/22 14:22:51 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ int main(int argc, char *argv[]) {
     }
 
     data = ft_launch_map(argv[1]);
+    printf("NO : %s\n", data->texture->t_north);
+	printf("SO : %s\n", data->texture->t_south);
+	printf("WE : %s\n", data->texture->t_west);
+	printf("EA : %s\n", data->texture->t_east);
+    printf("F : %d\n", data->floor_color);
+	printf("C : %d\n", data->ceiling_color);
     // ft_player_init(data); // Seems you're calling this inside ft_mlx_init
     ft_mlx_init(data);
 

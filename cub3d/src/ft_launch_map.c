@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_launch_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/20 17:50:43 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/22 14:22:40 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,6 @@ static int	ft_check_extension(char *map)
 	if (ft_strcmp(s, ".cub") == 0)
 		return (free(s), 1);
 	return (free(s), 0);
-}
-
-void	ft_print_tab(t_data *data)
-{
-	printf("FOR FILE :\n");
-	printf("nb_lines_file : %d\n", data->nb_lines_file);
-	for (int i = 0; i < data->nb_lines_file; i++)
-		printf("%s\n", data->file[i]);
-	printf("FOR TAB :\n");
-	printf("mapWidth %d\n", data->longest_line);
-	printf("mapHeight %d\n", data->nb_lines);
-	for (int i = 0; i < data->nb_lines; i++)
-	{
-		for (int j = 0; j < data->longest_line; j++)
-			printf("%c", data->tab[i][j]);
-		printf("\n");
-	}
 }
 
 t_data	*ft_launch_map(char *map)
@@ -87,27 +70,11 @@ t_data	*ft_launch_map(char *map)
 			break;
 	}
 	buffer[len] = '\0';
+	data = ft_parsing(buffer);
 	printf(GREEN "[INFO]" YELLOW " Initialization of the map...\n" EOC);
-	data = ft_count_file_lines(len, buffer);
-	if (!ft_fill_tab(data, buffer))
-	{
-		printf(RED "[ERROR]" YELLOW " Allocation failure\n" EOC);
-		ft_free_tab(data);
-		free(data->file);
-		free(data);
-		close(fd);
-		exit(EXIT_FAILURE);
-	}
-	ft_print_tab(data);
 	if (len == -1)
 	{
 		perror(RED "[ERROR]" YELLOW " Reading file" EOC);
-		close(fd);
-		exit(EXIT_FAILURE);
-	}
-	
-	if (!ft_parsing(data))
-	{
 		close(fd);
 		exit(EXIT_FAILURE);
 	}

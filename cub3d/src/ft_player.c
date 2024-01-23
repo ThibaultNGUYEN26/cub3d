@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_player.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 23:34:14 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/12 00:25:15 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:34:49 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_player_init(t_data *data)
 	while (++i < data->nb_lines)
 	{
 		j = -1;
-		while (++j < data->longest_line)
+        while (data->tab[i][++j])
 		{
 			if (data->tab[i][j] == 'N' || data->tab[i][j] == 'S' || data->tab[i][j] == 'W' || data->tab[i][j] == 'E')
 			{

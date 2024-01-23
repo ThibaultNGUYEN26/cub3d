@@ -6,7 +6,7 @@
 #    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/19 15:31:01 by rchbouki         ###   ########.fr        #
+#    Updated: 2024/01/22 15:04:26 by rchbouki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,13 +23,16 @@ SRCS		=	libft/ft_strcmp.c \
 				libft/ft_strlen.c \
 				libft/ft_substr.c \
 				libft/ft_atoi.c \
+				libft/ft_itoa.c \
+				libft/ft_strlcpy.c \
 				ft_launch_map.c \
-				ft_tab_init.c \
+				ft_parsing.c \
+				parsing_utils.c \
+				ft_fill_tab.c \
 				ft_mlx_init.c \
-				ft_player.c \
 				ft_draw_minimap.c \
-				ft_raycasting.c \
-				ft_parsing.c 
+				ft_player.c \
+				ft_raycasting.c
 
 OBJS		=	$(addprefix ${OBJECTS}/, $(SRCS:.c=.o))
 

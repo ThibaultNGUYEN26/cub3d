@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/19 17:15:17 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/22 14:59:12 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ typedef struct	s_data
 	int			key;
 	int			nb_lines;
 	int			longest_line;
-	int			nb_lines_file;
-	char		**file;
 	char		**tab;
 	int			key_status[NUM_KEYS];
 	int			floor_color;
@@ -107,25 +105,30 @@ enum TextureIndex {
     TEXTURE_EAST
 };
 
-int			ft_strcmp(char *s1, char *s2);
-char		*ft_strdup(char *s);
-char		*ft_strjoin(char *s1, char *s2);
-int			ft_strlen(char *s);
-char		*ft_substr(char *s, int start, int len);
-int			ft_atoi(char *str);
+int				ft_strcmp(char *s1, char *s2);
+char			*ft_strdup(char *s);
+char			*ft_strjoin(char *s1, char *s2);
+int				ft_strlen(char *s);
+char			*ft_substr(char *s, int start, int len);
+int				ft_atoi(char *str);
+char			*ft_itoa(int n);
+size_t			ft_strlcpy(char *dst, char *src, size_t dstsize);
 
-t_data		*ft_launch_map(char *map);
-int			ft_white_spaces(char *s);
-t_data		*ft_count_file_lines(ssize_t bytes_read, char *buffer);
-int			ft_fill_tab(t_data *data, char *buffer);
-void		ft_free_tab(t_data *data);
-int			ft_parsing(t_data *data);
+int				ft_is_wspaces(char c);
+void			error_msg(t_data *data, int *var, char **var_char, char *buffer);
+int				check_color_utils(char *buffer, int *k);
+int				affect_color(char *str, int *value);
+unsigned int	ft_convert_color(int r, int g, int b);
 
-void		ft_mlx_init(t_data *data);
-void		ft_player_init(t_data *data);
-void		performRaycasting(t_data *data);
-void		updatePlayerPosition(int keycode, t_data *data);
-void		draw_minimap(t_data *data);
-void		raycastMinimap(t_data *data);
+t_data			*ft_launch_map(char *map);
+t_data			*ft_parsing(char *buffer);
+void			ft_create_tab(t_data *data, char *buffer, int k);
+
+void			ft_mlx_init(t_data *data);
+void			ft_player_init(t_data *data);
+void			performRaycasting(t_data *data);
+void			updatePlayerPosition(int keycode, t_data *data);
+void			draw_minimap(t_data *data);
+void			raycastMinimap(t_data *data);
 
 #endif
