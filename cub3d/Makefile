@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
+#    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/22 15:04:26 by rchbouki         ###   ########.fr        #
+#    Updated: 2024/01/23 20:36:34 by thibault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ INCLUDES	=	-I./includes \
 
 SRCS		=	libft/ft_strcmp.c \
 				libft/ft_strdup.c \
+				libft/ft_strdup2.c \
 				libft/ft_strjoin.c \
 				libft/ft_strlen.c \
 				libft/ft_substr.c \

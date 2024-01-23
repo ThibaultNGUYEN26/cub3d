@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/22 14:59:12 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/23 20:36:45 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ enum TextureIndex {
 
 int				ft_strcmp(char *s1, char *s2);
 char			*ft_strdup(char *s);
+char			*ft_strdup2(int len, char *s);
 char			*ft_strjoin(char *s1, char *s2);
 int				ft_strlen(char *s);
 char			*ft_substr(char *s, int start, int len);
