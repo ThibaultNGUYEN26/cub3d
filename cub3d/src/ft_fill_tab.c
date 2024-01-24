@@ -6,7 +6,11 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 22:40:27 by rchbouki          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/01/24 20:49:46 by rchbouki         ###   ########.fr       */
+=======
+/*   Updated: 2024/01/24 20:24:38 by thibault         ###   ########.fr       */
+>>>>>>> refs/remotes/origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +116,7 @@ static void	ft_tab_init(t_data *data, char *buffer, int k)
 		k++;
 	}
 	end = k;
-	// check if after the first empty line we encounter after the end of the map, there are ONLY empty lines 
+	// check if after the first empty line we encounter after the end of the map, there are ONLY empty lines
 	while (buffer[k])
 	{
 		if (!ft_is_wspaces(buffer[k]) && buffer[k] != '\n' && buffer[k] != '\0')
