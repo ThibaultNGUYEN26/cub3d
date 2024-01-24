@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/22 14:59:12 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/23 20:52:23 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,12 @@ int				check_color_utils(char *buffer, int *k);
 int				affect_color(char *str, int *value);
 unsigned int	ft_convert_color(int r, int g, int b);
 
+int				check_element_utils(char *buffer, int *k, t_data *data, char *cmp);
+
 t_data			*ft_launch_map(char *map);
 t_data			*ft_parsing(char *buffer);
+int				check_color(t_data *data, char *buffer, char *cmp, int *k);
+void			element_affect(t_data *data, char *cmp, char *value, int test);
 void			ft_create_tab(t_data *data, char *buffer, int k);
 
 void			ft_mlx_init(t_data *data);

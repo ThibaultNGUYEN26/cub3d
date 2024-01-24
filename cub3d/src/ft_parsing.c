@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:16:27 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/22 15:00:44 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/23 20:55:06 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ static int	ft_init_parsing(t_data **data, int **var, char ***var_char)
 	return (1);
 }
 
-static void	element_affect(t_data *data, char *cmp, char *value, int test)
+void	element_affect(t_data *data, char *cmp, char *value, int test)
 {
 	if (!test)
-	{	
+	{
 		if (!ft_strcmp(cmp, "NO"))
 			data->texture->t_north = value;
 		else if (!ft_strcmp(cmp, "SO"))
@@ -64,32 +64,27 @@ static void	element_affect(t_data *data, char *cmp, char *value, int test)
 	}
 }
 
-static int	check_color(t_data *data, char *buffer, char *cmp, int *k)
+int	check_color(t_data *data, char *buffer, char *cmp, int *k)
 {
 	int	r;
 	int	g;
 	int	b;
 	int	count;
 	int	start;
-	
+
 	count = 0;
 	while (1)
 	{
 		start = *k;
-		while (!ft_is_wspaces(buffer[*k]) && buffer[*k] != ',' && (buffer[*k] >= '0' && buffer[*k] <= '9'))
+		while (!ft_is_wspaces(buffer[*k]) && buffer[*k] != ','
+			&& (buffer[*k] >= '0' && buffer[*k] <= '9'))
 			*k += 1;
 		if (buffer[*k] == ',')
 		{
-			if (count == 0)
-			{
-				if (!affect_color(ft_substr(buffer, start, *k - start), &r))
-					return (-1);	
-			}
-			else if (count == 1)
-			{
-				if (!affect_color(ft_substr(buffer, start, *k - start), &g))
+			if (count == 0 && !affect_color(ft_substr(buffer, start, *k - start), &r))
+				return (-1);
+			else if (count == 1 && !affect_color(ft_substr(buffer, start, *k - start), &g))
 					return (-1);
-			}
 			else if (count > 1)
 				return (-1);
 			*k += 1;
@@ -97,20 +92,15 @@ static int	check_color(t_data *data, char *buffer, char *cmp, int *k)
 		}
 		else if (buffer[*k] == '\n' || ft_is_wspaces(buffer[*k]))
 		{
-			if (count == 2)
-			{
-				if (!affect_color(ft_substr(buffer, start, *k - start), &b))
-					return (-1);
-			}
+			if (count == 2 && !affect_color(ft_substr(buffer, start, *k - start), &b))
+				return (-1);
 			else if (count != 2 || check_color_utils(buffer, k) == -1)
 				return (-1);
-			break;
+			break ;
 		}
 		else
 			return (-1);
 	}
-	if (b < 0 || b > 255)
-		return (-1);
 	element_affect(data, cmp, ft_itoa(ft_convert_color(r, g, b)), 1);
 	return (1);
 }
@@ -119,7 +109,6 @@ static int	ft_check_element(char *buffer, int *k, t_data *data, char *cmp)
 {
 	char	*str;
 	int		len;
-	int		end;
 	int		result;
 
 	len = ft_strlen(cmp);
@@ -135,23 +124,8 @@ static int	ft_check_element(char *buffer, int *k, t_data *data, char *cmp)
 		if (buffer[*k] == '\0' || buffer[*k] == '\n')
 			return (-1);
 		// if we are not checking colors : we are checking textures
-		if (ft_strcmp(cmp, "F") && ft_strcmp(cmp, "C"))
-		{
-			end = *k; 
-			if (buffer[*k] != '.' || buffer[*k + 1] != '/')
-				return (-1);
-			while (!ft_is_wspaces(buffer[end]) && buffer[end] != '\n')
-				end++;
-			if (buffer[*k] == '\0')
-				return (-1);
-			element_affect(data, cmp, ft_substr(buffer, *k, end - *k), 0);
-			*k = end;
-		}
-		else
-		{
-			if (check_color(data, buffer, cmp, k) == -1)
-				return (-1);
-		}
+		if (check_element_utils(buffer, k, data, cmp) == -1)
+			return (-1);
 	}
 	else if (result)
 		return (0);
@@ -168,7 +142,7 @@ t_data	*ft_parsing(char *buffer)
 	int		k;
 	int		temp;
 	int		i;
-	
+
 	i = -1;
 	k = 0;
 	data = NULL;
@@ -203,7 +177,7 @@ t_data	*ft_parsing(char *buffer)
 					var[i] += 1;
 					if (var[i] > 1)
 						error_msg(data, var, var_char, buffer);
-					break;
+					break ;
 				}
 			}
 		}

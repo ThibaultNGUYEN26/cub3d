@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 22:40:27 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/22 19:33:25 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/23 21:38:02 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,5 +202,57 @@ void	ft_create_tab(t_data *data, char *buffer, int k)
 	{
 		printf("error 6\n");
 		ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
+	}
+	i = -1;
+	int	len_1;
+	int	len_2;
+	while (++i < data->nb_lines)
+	{
+		if (i == 0)
+		{
+			// we only check down
+			len_1 = ft_strlen(data->tab[i]);
+			len_2 = ft_strlen(data->tab[i + 1]);
+			if (len_1 < len_2)
+			{
+				j = len_1 - 2;
+				while (++j < len_2)
+					if (data->tab[i + 1][j] != '1')
+						ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
+			}
+		}
+		else if (i == data->nb_lines - 1)
+		{
+			// we only check up
+			len_1 = ft_strlen(data->tab[i]);
+			len_2 = ft_strlen(data->tab[i - 1]);
+			if (len_1 < len_2)
+			{
+				j = len_1 - 2;
+				while (++j < len_2)
+					if (data->tab[i - 1][j] != '1')
+						ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
+			}
+		}
+		else
+		{
+			len_1 = ft_strlen(data->tab[i]);
+			len_2 = ft_strlen(data->tab[i - 1]);
+			if (len_1 < len_2)
+			{
+				j = len_1 - 2;
+				while (++j < len_2)
+					if (data->tab[i - 1][j] != '1')
+						ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
+			}
+			len_2 = ft_strlen(data->tab[i + 1]);
+			if (len_1 < len_2)
+			{
+				j = len_1 - 2;
+				while (++j < len_2)
+					if (data->tab[i + 1][j] != '1')
+						ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
+			}
+		}
 	}
 }
