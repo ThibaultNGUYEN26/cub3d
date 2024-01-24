@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 01:49:10 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/23 18:58:16 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/23 20:57:54 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,40 @@ static int  ft_longest_line(t_data *data)
 }
 
 void draw_minimap(t_data *data) {
+    // Find the longest line
     int longest = ft_longest_line(data);
+
+    // Extend each line to the length of the longest line
+    for (int i = 0; i < data->nb_lines; i++) {
+        int current_length = ft_strlen(data->tab[i]);
+        if (current_length < longest) {
+            char *extended_line = ft_strdup2(longest, data->tab[i]); // +1 for null-terminator
+            for (int j = current_length; j < longest; j++) {
+                extended_line[j] = '1'; // Use space or other filler character
+            }
+            extended_line[longest] = '\0';
+
+            free(data->tab[i]);
+            data->tab[i] = extended_line;
+        }
+    }
+
     // Calculate the aspect ratio of the map and the size of the minimap
     double map_aspect_ratio = (double)longest / (double)data->nb_lines;
     int minimap_width = MAP_SIZE;
-    int minimap_height = (int)(MAP_SIZE / map_aspect_ratio);
+    int minimap_height = MAP_SIZE;
+
+    // Adjust minimap size based on the map orientation
+    if (map_aspect_ratio > 1) {
+        // Map is wider than it is tall (horizontal)
+        minimap_height = (int)(MAP_SIZE / map_aspect_ratio);
+    } else {
+        // Map is taller than it is wide (vertical)
+        minimap_width = (int)(MAP_SIZE * map_aspect_ratio);
+    }
 
     // Create the minimap image if it doesn't exist or if its size is incorrect
-    if (!data->minimap_img)
-    {
+    if (!data->minimap_img) {
         data->minimap_img = mlx_new_image(data->mlx, minimap_width, minimap_height);
         data->minimap_addr = mlx_get_data_addr(data->minimap_img, &data->bits_per_pixel, &data->line_length, &data->endian);
     }
@@ -49,8 +74,8 @@ void draw_minimap(t_data *data) {
     for (int y = 0; y < minimap_height; y++) {
         for (int x = 0; x < minimap_width; x++) {
             // Calculate the corresponding map coordinate
-            int map_x = (int)(x * (longest / (double)minimap_width));
             int map_y = (int)(y * (data->nb_lines / (double)minimap_height));
+            int map_x = (int)(x * (ft_strlen(data->tab[map_y]) / (double)minimap_width));
 
             // Draw walls and empty spaces differently
             int color = (data->tab[map_y][map_x] == '1') ? 0x000000 : 0xFFFFFF;
@@ -84,8 +109,18 @@ void raycastMinimap(t_data *data) {
     double dirY = data->player->dirY;
     int longest = ft_longest_line(data);
     
-    int minimap_width = MAP_SIZE; // Use the actual minimap width
-    int minimap_height = (int)(MAP_SIZE / ((double)longest / (double)data->nb_lines)); // Use the actual minimap height
+    double map_aspect_ratio = (double)longest / (double)data->nb_lines;
+    int minimap_width = MAP_SIZE;
+    int minimap_height = MAP_SIZE;
+
+    // Adjust minimap size based on the map orientation
+    if (map_aspect_ratio > 1) {
+        // Map is wider than it is tall (horizontal)
+        minimap_height = (int)(MAP_SIZE / map_aspect_ratio);
+    } else {
+        // Map is taller than it is wide (vertical)
+        minimap_width = (int)(MAP_SIZE * map_aspect_ratio);
+    }
     int *img = (int *)data->minimap_addr;
 
     // Adjust the step size for more accurate ray casting

@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/23 20:52:23 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:15:44 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ enum TextureIndex {
 
 int				ft_strcmp(char *s1, char *s2);
 char			*ft_strdup(char *s);
+char			*ft_strdup2(int len, char *s);
 char			*ft_strjoin(char *s1, char *s2);
 int				ft_strlen(char *s);
 char			*ft_substr(char *s, int start, int len);

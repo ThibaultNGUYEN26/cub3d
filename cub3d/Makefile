@@ -6,7 +6,7 @@
 #    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/23 20:40:08 by rchbouki         ###   ########.fr        #
+#    Updated: 2024/01/24 17:16:17 by rchbouki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ INCLUDES	=	-I./includes \
 
 SRCS		=	libft/ft_strcmp.c \
 				libft/ft_strdup.c \
+				libft/ft_strdup2.c \
 				libft/ft_strjoin.c \
 				libft/ft_strlen.c \
 				libft/ft_substr.c \
