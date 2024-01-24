@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:16:27 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/24 17:47:45 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/24 20:49:17 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ t_data	*ft_parsing(char *buffer)
 	int		k;
 	int		temp;
 	int		i;
+	int		start;
 
 	i = -1;
 	k = 0;
@@ -160,6 +161,7 @@ t_data	*ft_parsing(char *buffer)
 	/* let's first scan every line for the textures and the colors and fill the data elements */
 	while (i != 6)
 	{
+		start = k;
 		// skipping the white spaces (empty lines or just spaces)
 		while (ft_is_wspaces(buffer[k]))
 			k++;
@@ -184,7 +186,9 @@ t_data	*ft_parsing(char *buffer)
 				}
 			}
 		}
+		// la boucle s'arrête quand on trouve une ligne qui ne match avec rien d'ou le i == 6 
 	}
+	k = start;
 	i = -1;
 	while (++i < 6)
 		if (var[i] == 0)

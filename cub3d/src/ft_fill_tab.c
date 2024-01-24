@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fill_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 22:40:27 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/24 18:06:19 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/24 20:49:46 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ static void	ft_tab_init(t_data *data, char *buffer, int k)
 		k++;
 	}
 	end = k;
-	// check if after the first empty line we encounter after the end of the map, there are ONLY empty lines while (buffer[k])
+	// check if after the first empty line we encounter after the end of the map, there are ONLY empty lines 
+	while (buffer[k])
 	{
 		if (!ft_is_wspaces(buffer[k]) && buffer[k] != '\n' && buffer[k] != '\0')
 			ft_free_data(data, 0, buffer, "Invalid Map.\n");
@@ -147,6 +148,7 @@ buffer, start, k - start)) - 1] != '1')
 				buffer[k] = '1';
 			k++;
 		}
+		/* printf("start : %d, k : %d, buffer : %s\n", start, k, ft_substr(buffer, start, k - start)); */
 		data->tab[i] = ft_substr(buffer, start, k - start);
 		if (!(data->tab[i]))
 			ft_free_data(data, i, buffer, "Allocation Failure.");
