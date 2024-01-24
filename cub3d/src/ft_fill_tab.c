@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fill_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 22:40:27 by rchbouki          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/01/24 20:49:46 by rchbouki         ###   ########.fr       */
-=======
-/*   Updated: 2024/01/24 20:24:38 by thibault         ###   ########.fr       */
->>>>>>> refs/remotes/origin/main
+/*   Updated: 2024/01/24 20:57:16 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

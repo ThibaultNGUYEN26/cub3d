@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:37:38 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/24 20:30:57 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/24 21:54:51 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,33 +29,33 @@ static void	draw_vertical_line(t_data *data, int x, int draw_start,
 
 void	perform_raycasting(t_data *data)
 {
-	double	raydir_x;
-	double	raydir_y;
-	int		map_x;
-	int		map_y;
-	double	side_dist_x;
-	double	side_dist_y;
-	double	delta_dist_x;
-	double	delta_dist_y;
-	double	perp_wall_dist;
-	int		step_x;
-	int		step_y;
-	int		line_height;
-	int		draw_start;
-	int		draw_end;
-	int		tex_index;
-	double	wall_x;
-	int		tex_width;
-	int		tex_x;
-	int		tex_y;
-	int		tex_height;
-	int		d;
-	int		color;
-	double	camera_x;
-	int		x;
-	int		y;
-	int		side;
-	int		hit;
+	double			raydir_x;
+	double			raydir_y;
+	int				map_x;
+	int				map_y;
+	double			side_dist_x;
+	double			side_dist_y;
+	double			delta_dist_x;
+	double			delta_dist_y;
+	double			perp_wall_dist;
+	int				step_x;
+	int				step_y;
+	int				line_height;
+	int				draw_start;
+	int				draw_end;
+	int				tex_index;
+	double			wall_x;
+	int				tex_width;
+	int				tex_x;
+	unsigned int	tex_y;
+	int				tex_height;
+	unsigned int	d;
+	int				color;
+	double			camera_x;
+	int				x;
+	int				y;
+	int				side;
+	int				hit;
 
 	x = -1;
 	while (++x < WIDTH)
@@ -79,7 +79,7 @@ void	perform_raycasting(t_data *data)
 		else
 			delta_dist_y = fabs(1 / raydir_y);
 		// Direction to step in x or y-direction (either +1 or -1)
-		hit = 0;// Was there a wall hit?
+		hit = 0; // Was there a wall hit?
 		// Calculate step and initial sideDist
 		if (raydir_x < 0)
 		{
@@ -173,10 +173,8 @@ void	perform_raycasting(t_data *data)
 		while (++y < draw_end)
 		{
 			d = y * 256 - HEIGHT * 128 + line_height * 128;
-			tex_y = ((d / 256) * tex_height) / line_height;
-			if (tex_y < 0)
-				tex_y = 0;
-			if (tex_y >= tex_height)
+			tex_y = (unsigned int)((d / 256) * tex_height) / line_height;
+			if (tex_y >= (unsigned int)tex_height)
 				tex_y = tex_height - 1;
 			color = data->texture[tex_index].data[tex_y
 				* data->texture[tex_index].width + tex_x];

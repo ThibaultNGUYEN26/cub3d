@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 01:49:10 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/24 18:03:04 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/24 21:05:10 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	draw_minimap(t_data *data)
 		if (current_length < longest)
 		{
 			extended_line = ft_strdup2(longest, data->tab[i]);
-			j = current_length;
+			j = current_length - 1;
 			while (++j < longest)
 				extended_line[j] = '1';
 			extended_line[longest] = '\0';
@@ -85,9 +85,9 @@ void	draw_minimap(t_data *data)
 		x = -1;
 		while (++x < minimap_width)
 		{
-			map_y = (int)(y * (data->nb_lines / (double)minimap_height));
-			map_x = (int)(x * (ft_strlen(data->tab[map_y])
-						/ (double)minimap_width));
+			map_y = (int)((double)y / minimap_height * data->nb_lines);
+			map_x = (int)((double)x / minimap_width
+					* ft_strlen(data->tab[map_y]));
 			if (data->tab[map_y][map_x] == '1')
 				color = 0x000000;
 			else
