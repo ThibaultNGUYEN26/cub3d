@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fill_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 22:40:27 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/23 21:38:02 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:06:19 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	empty_line(char *str)
 			return (0);
 		}
 		if (str[i] == '\0')
-			break;
+			break ;
 	}
 	free(str);
 	return (1);
@@ -60,9 +60,9 @@ static int	ft_last_in_line(char *line)
 	while (i >= 0)
 	{
 		if (!ft_is_wspaces(line[i]) && line[i] != '\n')
-			break;
+			break ;
 		i--;
-		index++;	
+		index++;
 	}
 	free(line);
 	return (index);
@@ -73,7 +73,8 @@ static void	ft_tab_init(t_data *data, char *buffer, int k)
 	int	i;
 	int	count;
 	int	start;
-	
+	int	end;
+
 	// skip the empty lines
 	while (1)
 	{
@@ -83,7 +84,7 @@ static void	ft_tab_init(t_data *data, char *buffer, int k)
 		if (!empty_line(ft_substr(buffer, start, k - start + 1)))
 		{
 			k = start;
-			break;
+			break ;
 		}
 		else
 			k++;
@@ -98,7 +99,7 @@ static void	ft_tab_init(t_data *data, char *buffer, int k)
 		while (buffer[k] && buffer[k] != '\n')
 			k++;
 		if (empty_line(ft_substr(buffer, start, k - start + 1)))
-			break;
+			break ;
 		else
 		{
 			count = k - start;
@@ -106,13 +107,12 @@ static void	ft_tab_init(t_data *data, char *buffer, int k)
 			if (data->longest_line < count)
 				data->longest_line = count;
 			if (buffer[k] == '\0')
-				break;
+				break ;
 		}
 		k++;
 	}
-	int end = k;
-	// check if after the first empty line we encounter after the end of the map, there are ONLY empty lines
-	while (buffer[k])
+	end = k;
+	// check if after the first empty line we encounter after the end of the map, there are ONLY empty lines while (buffer[k])
 	{
 		if (!ft_is_wspaces(buffer[k]) && buffer[k] != '\n' && buffer[k] != '\0')
 			ft_free_data(data, 0, buffer, "Invalid Map.\n");
@@ -127,7 +127,8 @@ static void	ft_tab_init(t_data *data, char *buffer, int k)
 			k++;
 		while (ft_is_wspaces(buffer[start]))
 			start++;
-		if (buffer[start] != '1' || buffer[k - ft_last_in_line(ft_substr(buffer, start, k - start)) - 1] != '1')
+		if (buffer[start] != '1' || buffer[k - ft_last_in_line(ft_substr(\
+buffer, start, k - start)) - 1] != '1')
 			ft_free_data(data, 0, buffer, "Invalid Map.\n");
 		k++;
 	}
@@ -161,7 +162,9 @@ void	ft_create_tab(t_data *data, char *buffer, int k)
 	int	i;
 	int	j;
 	int	player;
-	
+	int	len_1;
+	int	len_2;
+
 	ft_tab_init(data, buffer, k);
 	free(buffer);
 	// CHECKING THE FIRST AND LAST LINES + CHEKCING THE PLAYER
@@ -182,10 +185,10 @@ void	ft_create_tab(t_data *data, char *buffer, int k)
 			if (data->tab[i][j] != 'N' && data->tab[i][j] != 'S'
 				&& data->tab[i][j] != 'W' && data->tab[i][j] != 'E'
 				&& data->tab[i][j] != '0' && data->tab[i][j] != '1')
-				{
-					printf("error 4\n");
-					ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
-				}
+			{
+				printf("error 4\n");
+				ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
+			}
 			if (data->tab[i][j] == 'N' || data->tab[i][j] == 'S'
 				|| data->tab[i][j] == 'W' || data->tab[i][j] == 'E')
 			{
@@ -204,8 +207,6 @@ void	ft_create_tab(t_data *data, char *buffer, int k)
 		ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
 	}
 	i = -1;
-	int	len_1;
-	int	len_2;
 	while (++i < data->nb_lines)
 	{
 		if (i == 0)
@@ -218,7 +219,8 @@ void	ft_create_tab(t_data *data, char *buffer, int k)
 				j = len_1 - 2;
 				while (++j < len_2)
 					if (data->tab[i + 1][j] != '1')
-						ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
+						ft_free_data(data, data->nb_lines, NULL,
+							"Invalid Map.");
 			}
 		}
 		else if (i == data->nb_lines - 1)
@@ -231,7 +233,8 @@ void	ft_create_tab(t_data *data, char *buffer, int k)
 				j = len_1 - 2;
 				while (++j < len_2)
 					if (data->tab[i - 1][j] != '1')
-						ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
+						ft_free_data(data, data->nb_lines, NULL,
+							"Invalid Map.");
 			}
 		}
 		else
@@ -243,7 +246,8 @@ void	ft_create_tab(t_data *data, char *buffer, int k)
 				j = len_1 - 2;
 				while (++j < len_2)
 					if (data->tab[i - 1][j] != '1')
-						ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
+						ft_free_data(data, data->nb_lines, NULL,
+							"Invalid Map.");
 			}
 			len_2 = ft_strlen(data->tab[i + 1]);
 			if (len_1 < len_2)
@@ -251,7 +255,8 @@ void	ft_create_tab(t_data *data, char *buffer, int k)
 				j = len_1 - 2;
 				while (++j < len_2)
 					if (data->tab[i + 1][j] != '1')
-						ft_free_data(data, data->nb_lines, NULL, "Invalid Map.");
+						ft_free_data(data, data->nb_lines, NULL,
+							"Invalid Map.");
 			}
 		}
 	}

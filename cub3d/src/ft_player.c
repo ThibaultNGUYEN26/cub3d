@@ -3,55 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   ft_player.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 23:34:14 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/23 19:14:48 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:30:34 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static void ft_player_direction(t_data *data, char dir)
+static void	ft_player_direction(t_data *data, char dir)
 {
-    // Set up FOV
-    double fov = 60.0 * M_PI / 180.0; // Convert 60 degrees to radians
+	double	fov;
 
-    if (dir == 'N')
-    {
-        data->player->dirX = 0;
-        data->player->dirY = -1;
-        data->player->planeX = tan(fov / 2.0);  // Extend plane along X-axis
-        data->player->planeY = 0;
-    }
-    else if (dir == 'S')
-    {
-        data->player->dirX = 0;
-        data->player->dirY = 1;
-        data->player->planeX = -tan(fov / 2.0);  // Extend plane along X-axis
-        data->player->planeY = 0;
-    }
-    else if (dir == 'W')
-    {
-        data->player->dirX = -1;
-        data->player->dirY = 0;
-        data->player->planeX = 0;  // Extend plane along Y-axis
-        data->player->planeY = -tan(fov / 2.0);
-    }
-    else // dir == 'E'
-    {
-        data->player->dirX = 1;
-        data->player->dirY = 0;
-        data->player->planeX = 0;  // Extend plane along Y-axis
-        data->player->planeY = tan(fov / 2.0);
-    }
+	fov = 60.0 * M_PI / 180.0;
+	if (dir == 'N')
+	{
+		data->player->dir_x = 0;
+		data->player->dir_y = -1;
+		data->player->planeX = tan(fov / 2.0);
+		data->player->planeY = 0;
+	}
+	else if (dir == 'S')
+	{
+		data->player->dir_x = 0;
+		data->player->dir_y = 1;
+		data->player->planeX = -tan(fov / 2.0);
+		data->player->planeY = 0;
+	}
+	else if (dir == 'W')
+	{
+		data->player->dir_x = -1;
+		data->player->dir_y = 0;
+		data->player->planeX = 0;
+		data->player->planeY = -tan(fov / 2.0);
+	}
+	else
+	{
+		data->player->dir_x = 1;
+		data->player->dir_y = 0;
+		data->player->planeX = 0;
+		data->player->planeY = tan(fov / 2.0);
+	}
 }
 
 void	ft_player_init(t_data *data)
 {
-	int			i;
-	int			j;
-	// double		fov_rad;
+	int	i;
+	int	j;
 
 	data->player = malloc(sizeof(t_player) * 1);
 	if (!data->player)
@@ -60,138 +59,146 @@ void	ft_player_init(t_data *data)
 	while (++i < data->nb_lines)
 	{
 		j = -1;
-        while (data->tab[i][++j])
+		while (data->tab[i][++j])
 		{
-			if (data->tab[i][j] == 'N' || data->tab[i][j] == 'S' || data->tab[i][j] == 'W' || data->tab[i][j] == 'E')
+			if (data->tab[i][j] == 'N' || data->tab[i][j] == 'S'
+				|| data->tab[i][j] == 'W' || data->tab[i][j] == 'E')
 			{
 				ft_player_direction(data, data->tab[i][j]);
-				data->player->posX = (double)j + 0.5;  // Center the player in the square
-            	data->player->posY = (double)i + 0.5;
-				// data->player->planeX = data->player->dirY * tan(fov_rad / 2);
-				// data->player->planeY = -data->player->dirX * tan(fov_rad / 2);
+				data->player->pos_x = (double)j + 0.5;
+				data->player->pos_y = (double)i + 0.5;
 				return ;
 			}
 		}
 	}
 }
 
-static int mapCollision(t_data *data, double newX, double newY)
+static int	map_collision(t_data *data, double newX, double newY)
 {
-    int mapX = (int)floor(newX); // Convert the new position to map coordinates
-    int mapY = (int)floor(newY);
+	int		map_x;
+	int		map_y;
+	double	frac_x;
+	double	frac_y;
+	int		adj_x;
+	int		adj_y;
+	double	threshold;
 
-    // Check if the new position is out of bounds
-    if (mapX < 0 || mapX >= WIDTH || mapY < 0 || mapY >= HEIGHT)
-        return 1; // Collision with out-of-bounds
-
-    // Check if the new position collides with a wall
-    if (data->tab[mapY][mapX] == '1')
-        return 1; // Collision with a wall
-
-    // Enhanced check for diagonal collision
-    double threshold = 0.07; // Adjust this threshold for sensitivity of diagonal collision
-    double fracX = newX - mapX;
-    double fracY = newY - mapY;
-
-    if ((fracX > 1 - threshold || fracX < threshold) && 
-        (fracY > 1 - threshold || fracY < threshold)) {
-        // Check adjacent cells for diagonal collision
-        int adjX = (fracX > 1 - threshold) ? 1 : -1;
-        int adjY = (fracY > 1 - threshold) ? 1 : -1;
-
-        if (mapX + adjX >= 0 && mapX + adjX < WIDTH && 
-            mapY + adjY >= 0 && mapY + adjY < HEIGHT) {
-            if (data->tab[mapY][mapX + adjX] == '1' && data->tab[mapY + adjY][mapX] == '1') {
-                return 1; // Diagonal collision detected
-            }
-        }
-    }
-
-    // If there's no collision, return 0
-    return 0;
+	map_x = (int)floor(newX);
+	map_y = (int)floor(newY);
+	if (map_x < 0 || map_x >= WIDTH || map_y < 0 || map_y >= HEIGHT)
+		return (1);
+	if (data->tab[map_y][map_x] == '1')
+		return (1);
+	threshold = 0.07;
+	frac_x = newX - map_x;
+	frac_y = newY - map_y;
+	if ((frac_x > 1 - threshold || frac_x < threshold) && (frac_y > 1
+			- threshold || frac_y < threshold))
+	{
+		if (frac_x > 1 - threshold)
+			adj_x = 1;
+		else
+			adj_x = -1;
+		if (frac_y > 1 - threshold)
+			adj_y = 1;
+		else
+			adj_y = -1;
+		if (map_x + adj_x >= 0 && map_x + adj_x < WIDTH && map_y + adj_y >= 0
+			&& map_y + adj_y < HEIGHT)
+		{
+			if (data->tab[map_y][map_x + adj_x] == '1' && data->tab[map_y
+				+ adj_y][map_x] == '1')
+			{
+				return (1);
+			}
+		}
+	}
+	return (0);
 }
 
-void updatePlayerPosition(int keycode, t_data *data)
+void	update_player_position(int keycode, t_data *data)
 {
-    double moveStepX, moveStepY, newPosX, newPosY;
+	double	strafe_step_x;
+	double	strafe_step_y;
+	double	olddir_x;
+	double	old_plane_x;
+	double	move_step_x;
+	double	move_step_y;
+	double	newpos_x;
+	double	newpos_y;
 
-    // Calculate the forward and backward movement steps
-    moveStepX = data->player->dirX * MOVE_SPEED;
-    moveStepY = data->player->dirY * MOVE_SPEED;
-
-    // Calculate the sideways (strafe) movement steps
-    double strafeStepX = data->player->planeX * MOVE_SPEED;
-    double strafeStepY = data->player->planeY * MOVE_SPEED;
-
-    // Handle forward and backward movement
-    if (keycode == KEY_W || keycode == KEY_S) {
-        if (keycode == KEY_S) { // Reverse direction if moving backwards
-            moveStepX = -moveStepX;
-            moveStepY = -moveStepY;
-        }
-
-        newPosX = data->player->posX + moveStepX;
-        newPosY = data->player->posY + moveStepY;
-
-        // Perform wall sliding if there's a collision
-        if (mapCollision(data, newPosX, newPosY)) {
-            if (!mapCollision(data, data->player->posX, newPosY)) {
-                // Slide along the Y-axis
-                data->player->posY = newPosY;
-            } else if (!mapCollision(data, newPosX, data->player->posY)) {
-                // Slide along the X-axis
-                data->player->posX = newPosX;
-            }
-        } else {
-            // No collision, move freely
-            data->player->posX = newPosX;
-            data->player->posY = newPosY;
-        }
-    }
-
-    // Handle strafe movement (left and right)
-    if (keycode == KEY_A || keycode == KEY_D) {
-        if (keycode == KEY_A) { // Reverse direction if strafing left
-            strafeStepX = -strafeStepX;
-            strafeStepY = -strafeStepY;
-        }
-
-        newPosX = data->player->posX + strafeStepX;
-        newPosY = data->player->posY + strafeStepY;
-
-        // Perform wall sliding if there's a collision
-        if (mapCollision(data, newPosX, newPosY)) {
-            if (!mapCollision(data, data->player->posX, newPosY)) {
-                // Slide along the Y-axis
-                data->player->posY = newPosY;
-            } else if (!mapCollision(data, newPosX, data->player->posY)) {
-                // Slide along the X-axis
-                data->player->posX = newPosX;
-            }
-        } else {
-            // No collision, move freely
-            data->player->posX = newPosX;
-            data->player->posY = newPosY;
-        }
-    }
-
-    // Handle keyboard input for rotation (turning)
-	if (keycode == KEY_LEFT) { // Rotate left
-        double oldDirX = data->player->dirX;
-        data->player->dirX = data->player->dirX * cos(-ROT_SPEED) - data->player->dirY * sin(-ROT_SPEED);
-        data->player->dirY = oldDirX * sin(-ROT_SPEED) + data->player->dirY * cos(-ROT_SPEED);
-
-        double oldPlaneX = data->player->planeX;
-        data->player->planeX = data->player->planeX * cos(-ROT_SPEED) - data->player->planeY * sin(-ROT_SPEED);
-        data->player->planeY = oldPlaneX * sin(-ROT_SPEED) + data->player->planeY * cos(-ROT_SPEED);
-    }
-    if (keycode == KEY_RIGHT) { // Rotate right
-        double oldDirX = data->player->dirX;
-        data->player->dirX = data->player->dirX * cos(ROT_SPEED) - data->player->dirY * sin(ROT_SPEED);
-        data->player->dirY = oldDirX * sin(ROT_SPEED) + data->player->dirY * cos(ROT_SPEED);
-
-        double oldPlaneX = data->player->planeX;
-        data->player->planeX = data->player->planeX * cos(ROT_SPEED) - data->player->planeY * sin(ROT_SPEED);
-        data->player->planeY = oldPlaneX * sin(ROT_SPEED) + data->player->planeY * cos(ROT_SPEED);
-    }
+	move_step_x = data->player->dir_x * MOVE_SPEED;
+	move_step_y = data->player->dir_y * MOVE_SPEED;
+	strafe_step_x = data->player->planeX * MOVE_SPEED;
+	strafe_step_y = data->player->planeY * MOVE_SPEED;
+	if (keycode == KEY_W || keycode == KEY_S)
+	{
+		if (keycode == KEY_S)
+		{
+			move_step_x = -move_step_x;
+			move_step_y = -move_step_y;
+		}
+		newpos_x = data->player->pos_x + move_step_x;
+		newpos_y = data->player->pos_y + move_step_y;
+		if (map_collision(data, newpos_x, newpos_y))
+		{
+			if (!map_collision(data, data->player->pos_x, newpos_y))
+				data->player->pos_y = newpos_y;
+			else if (!map_collision(data, newpos_x, data->player->pos_y))
+				data->player->pos_x = newpos_x;
+		}
+		else
+		{
+			data->player->pos_x = newpos_x;
+			data->player->pos_y = newpos_y;
+		}
+	}
+	if (keycode == KEY_A || keycode == KEY_D)
+	{
+		if (keycode == KEY_A)
+		{
+			strafe_step_x = -strafe_step_x;
+			strafe_step_y = -strafe_step_y;
+		}
+		newpos_x = data->player->pos_x + strafe_step_x;
+		newpos_y = data->player->pos_y + strafe_step_y;
+		if (map_collision(data, newpos_x, newpos_y))
+		{
+			if (!map_collision(data, data->player->pos_x, newpos_y))
+				data->player->pos_y = newpos_y;
+			else if (!map_collision(data, newpos_x, data->player->pos_y))
+				data->player->pos_x = newpos_x;
+		}
+		else
+		{
+			data->player->pos_x = newpos_x;
+			data->player->pos_y = newpos_y;
+		}
+	}
+	if (keycode == KEY_LEFT)
+	{
+		olddir_x = data->player->dir_x;
+		data->player->dir_x = data->player->dir_x * cos(-ROT_SPEED)
+			- data->player->dir_y * sin(-ROT_SPEED);
+		data->player->dir_y = olddir_x * sin(-ROT_SPEED) + data->player->dir_y
+			* cos(-ROT_SPEED);
+		old_plane_x = data->player->planeX;
+		data->player->planeX = data->player->planeX * cos(-ROT_SPEED)
+			- data->player->planeY * sin(-ROT_SPEED);
+		data->player->planeY = old_plane_x * sin(-ROT_SPEED)
+			+ data->player->planeY * cos(-ROT_SPEED);
+	}
+	if (keycode == KEY_RIGHT)
+	{
+		olddir_x = data->player->dir_x;
+		data->player->dir_x = data->player->dir_x * cos(ROT_SPEED)
+			- data->player->dir_y * sin(ROT_SPEED);
+		data->player->dir_y = olddir_x * sin(ROT_SPEED) + data->player->dir_y
+			* cos(ROT_SPEED);
+		old_plane_x = data->player->planeX;
+		data->player->planeX = data->player->planeX * cos(ROT_SPEED)
+			- data->player->planeY * sin(ROT_SPEED);
+		data->player->planeY = old_plane_x * sin(ROT_SPEED)
+			+ data->player->planeY * cos(ROT_SPEED);
+	}
 }

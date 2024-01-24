@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:16:27 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/23 20:55:06 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:47:45 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,12 @@ int	check_color(t_data *data, char *buffer, char *cmp, int *k)
 			*k += 1;
 		if (buffer[*k] == ',')
 		{
-			if (count == 0 && !affect_color(ft_substr(buffer, start, *k - start), &r))
+			if (count == 0 && !affect_color(ft_substr(buffer, start, *k
+						- start), &r))
 				return (-1);
-			else if (count == 1 && !affect_color(ft_substr(buffer, start, *k - start), &g))
-					return (-1);
+			else if (count == 1 && !affect_color(ft_substr(buffer, start, *k
+						- start), &g))
+				return (-1);
 			else if (count > 1)
 				return (-1);
 			*k += 1;
@@ -92,7 +94,8 @@ int	check_color(t_data *data, char *buffer, char *cmp, int *k)
 		}
 		else if (buffer[*k] == '\n' || ft_is_wspaces(buffer[*k]))
 		{
-			if (count == 2 && !affect_color(ft_substr(buffer, start, *k - start), &b))
+			if (count == 2 && !affect_color(ft_substr(buffer, start, *k
+						- start), &b))
 				return (-1);
 			else if (count != 2 || check_color_utils(buffer, k) == -1)
 				return (-1);

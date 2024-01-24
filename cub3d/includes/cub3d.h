@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/24 17:15:44 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:02:37 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,12 @@
 
 typedef struct	s_player
 {
-	double		posX;
-	double		posY;
-	double		dirX;
-	double		dirY;
-	double		oldDirX;
-	double		oldDirY;
-	double		rotSpeed;
+	double		pos_x;
+	double		pos_y;
+	double		dir_x;
+	double		dir_y;
+	double		olddir_x;
+	double		olddir_y;
 	double		planeX;
 	double		planeY;
 }	t_player;
@@ -131,9 +130,9 @@ void			ft_create_tab(t_data *data, char *buffer, int k);
 
 void			ft_mlx_init(t_data *data);
 void			ft_player_init(t_data *data);
-void			performRaycasting(t_data *data);
-void			updatePlayerPosition(int keycode, t_data *data);
+void			perform_raycasting(t_data *data);
+void			update_player_position(int keycode, t_data *data);
 void			draw_minimap(t_data *data);
-void			raycastMinimap(t_data *data);
+void			raycast_minimap(t_data *data);
 
 #endif

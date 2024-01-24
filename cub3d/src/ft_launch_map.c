@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_launch_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/22 14:22:40 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:27:32 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-/* static void	ft_error(char *error, int fd)
-{
-	printf(RED "[ERROR] " YELLOW %s "\n" EOC, error);
-	close(fd);
-	exit(EXIT_FAILURE);
-} */
 
 static int	ft_check_extension(char *map)
 {
@@ -35,9 +28,13 @@ t_data	*ft_launch_map(char *map)
 {
 	int		fd;
 	ssize_t	bytes_read;
-	char	*buffer = NULL;
+	char	*buffer;
 	t_data	*data;
+	char	*old_buffer;
+	char	read2[1025];
+	int		len;
 
+	buffer = NULL;
 	data = NULL;
 	if (!ft_check_extension(map))
 	{
@@ -45,13 +42,13 @@ t_data	*ft_launch_map(char *map)
 		exit(EXIT_FAILURE);
 	}
 	fd = open(map, O_RDONLY);
-	if (fd == -1) {
+	if (fd == -1)
+	{
 		perror(RED "[ERROR]" YELLOW " Opening file" EOC);
 		exit(EXIT_FAILURE);
 	}
-	char	*old_buffer = NULL;
-	char	read2[1025];
-	int		len = 0;
+	old_buffer = NULL;
+	len = 0;
 	while (1)
 	{
 		bytes_read = read(fd, read2, 1024);
@@ -67,7 +64,7 @@ t_data	*ft_launch_map(char *map)
 			buffer = ft_strjoin(old_buffer, read2);
 		}
 		else
-			break;
+			break ;
 	}
 	buffer[len] = '\0';
 	data = ft_parsing(buffer);

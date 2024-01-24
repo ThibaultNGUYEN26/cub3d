@@ -6,156 +6,177 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 01:49:10 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/23 20:57:54 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:03:04 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int  ft_longest_line(t_data *data)
+static int	ft_longest_line(t_data *data)
 {
-    int i;
-    int j;
-    int longest;
+	int	i;
+	int	j;
+	int	longest;
 
-    longest = 0;
-    i = -1;
-    while (++i < data->nb_lines)
-    {
-        j = ft_strlen(data->tab[i]);
-        if (longest < j)
-            longest = j;
-    }
-    return (longest);
+	longest = 0;
+	i = -1;
+	while (++i < data->nb_lines)
+	{
+		j = ft_strlen(data->tab[i]);
+		if (longest < j)
+			longest = j;
+	}
+	return (longest);
 }
 
-void draw_minimap(t_data *data) {
-    // Find the longest line
-    int longest = ft_longest_line(data);
+void	draw_minimap(t_data *data)
+{
+	int		longest;
+	int		current_length;
+	double	map_aspect_ratio;
+	int		minimap_width;
+	int		minimap_height;
+	int		*img;
+	int		map_y;
+	int		map_x;
+	int		color;
+	int		player_minimap_x;
+	int		player_minimap_y;
+	int		i;
+	char	*extended_line;
+	int		y;
+	int		x;
+	int		j;
 
-    // Extend each line to the length of the longest line
-    for (int i = 0; i < data->nb_lines; i++) {
-        int current_length = ft_strlen(data->tab[i]);
-        if (current_length < longest) {
-            char *extended_line = ft_strdup2(longest, data->tab[i]); // +1 for null-terminator
-            for (int j = current_length; j < longest; j++) {
-                extended_line[j] = '1'; // Use space or other filler character
-            }
-            extended_line[longest] = '\0';
-
-            free(data->tab[i]);
-            data->tab[i] = extended_line;
-        }
-    }
-
-    // Calculate the aspect ratio of the map and the size of the minimap
-    double map_aspect_ratio = (double)longest / (double)data->nb_lines;
-    int minimap_width = MAP_SIZE;
-    int minimap_height = MAP_SIZE;
-
-    // Adjust minimap size based on the map orientation
-    if (map_aspect_ratio > 1) {
-        // Map is wider than it is tall (horizontal)
-        minimap_height = (int)(MAP_SIZE / map_aspect_ratio);
-    } else {
-        // Map is taller than it is wide (vertical)
-        minimap_width = (int)(MAP_SIZE * map_aspect_ratio);
-    }
-
-    // Create the minimap image if it doesn't exist or if its size is incorrect
-    if (!data->minimap_img) {
-        data->minimap_img = mlx_new_image(data->mlx, minimap_width, minimap_height);
-        data->minimap_addr = mlx_get_data_addr(data->minimap_img, &data->bits_per_pixel, &data->line_length, &data->endian);
-    }
-
-    int *img = (int *)data->minimap_addr;
-
-    // Draw the minimap
-    for (int y = 0; y < minimap_height; y++) {
-        for (int x = 0; x < minimap_width; x++) {
-            // Calculate the corresponding map coordinate
-            int map_y = (int)(y * (data->nb_lines / (double)minimap_height));
-            int map_x = (int)(x * (ft_strlen(data->tab[map_y]) / (double)minimap_width));
-
-            // Draw walls and empty spaces differently
-            int color = (data->tab[map_y][map_x] == '1') ? 0x000000 : 0xFFFFFF;
-            img[y * minimap_width + x] = color;
-        }
-    }
-
-    // Draw the player on the minimap
-    int player_minimap_x = (int)(data->player->posX * (minimap_width / (double)longest));
-    int player_minimap_y = (int)(data->player->posY * (minimap_height / (double)data->nb_lines));
-
-    // Check bounds for player position on minimap
-    if (player_minimap_x >= 0 && player_minimap_x < minimap_width && 
-        player_minimap_y >= 0 && player_minimap_y < minimap_height) {
-        img[player_minimap_y * minimap_width + player_minimap_x] = 0xFF0000; // Red for the player
-    }
-
-    // Calculate the position for the minimap (top right corner)
-    data->minimap_x = WIDTH - minimap_width - 20;
-    data->minimap_y = 20;
-
-    // Display the minimap on the window
-    mlx_put_image_to_window(data->mlx, data->win, data->minimap_img, data->minimap_x, data->minimap_y);
-    raycastMinimap(data);
+	longest = ft_longest_line(data);
+	i = -1;
+	while (++i < data->nb_lines)
+	{
+		current_length = ft_strlen(data->tab[i]);
+		if (current_length < longest)
+		{
+			extended_line = ft_strdup2(longest, data->tab[i]);
+			j = current_length;
+			while (++j < longest)
+				extended_line[j] = '1';
+			extended_line[longest] = '\0';
+			free(data->tab[i]);
+			data->tab[i] = extended_line;
+		}
+	}
+	map_aspect_ratio = (double)longest / (double)data->nb_lines;
+	minimap_width = MAP_SIZE;
+	minimap_height = MAP_SIZE;
+	if (map_aspect_ratio > 1)
+		minimap_height = (int)(MAP_SIZE / map_aspect_ratio);
+	else
+		minimap_width = (int)(MAP_SIZE * map_aspect_ratio);
+	if (!data->minimap_img)
+	{
+		data->minimap_img = mlx_new_image(data->mlx, minimap_width,
+				minimap_height);
+		data->minimap_addr = mlx_get_data_addr(data->minimap_img,
+				&data->bits_per_pixel, &data->line_length, &data->endian);
+	}
+	img = (int *)data->minimap_addr;
+	y = -1;
+	while (++y < minimap_height)
+	{
+		x = -1;
+		while (++x < minimap_width)
+		{
+			map_y = (int)(y * (data->nb_lines / (double)minimap_height));
+			map_x = (int)(x * (ft_strlen(data->tab[map_y])
+						/ (double)minimap_width));
+			if (data->tab[map_y][map_x] == '1')
+				color = 0x000000;
+			else
+				color = 0xFFFFFF;
+			img[y * minimap_width + x] = color;
+		}
+	}
+	player_minimap_x = (int)(data->player->pos_x * (minimap_width
+				/ (double)longest));
+	player_minimap_y = (int)(data->player->pos_y * (minimap_height
+				/ (double)data->nb_lines));
+	if (player_minimap_x >= 0 && player_minimap_x < minimap_width
+		&& player_minimap_y >= 0 && player_minimap_y < minimap_height)
+		img[player_minimap_y * minimap_width + player_minimap_x] = 0xFF0000;
+	data->minimap_x = WIDTH - minimap_width - 20;
+	data->minimap_y = 20;
+	mlx_put_image_to_window(data->mlx, data->win, data->minimap_img,
+		data->minimap_x, data->minimap_y);
+	raycast_minimap(data);
 }
 
-void raycastMinimap(t_data *data) {
-    double posX = data->player->posX;
-    double posY = data->player->posY;
-    double dirX = data->player->dirX;
-    double dirY = data->player->dirY;
-    int longest = ft_longest_line(data);
-    
-    double map_aspect_ratio = (double)longest / (double)data->nb_lines;
-    int minimap_width = MAP_SIZE;
-    int minimap_height = MAP_SIZE;
+void	raycast_minimap(t_data *data)
+{
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+	int		longest;
+	double	map_aspect_ratio;
+	int		minimap_width;
+	int		minimap_height;
+	int		*img;
+	double	step_size;
+	double	fov;
+	double	angle;
+	double	raydir_x;
+	double	raydir_y;
+	double	map_x;
+	double	map_y;
+	int		minimap_x;
+	int		minimap_y;
+	int		minimap_index_x;
+	int		minimap_index_y;
+	int		minimap_index;
 
-    // Adjust minimap size based on the map orientation
-    if (map_aspect_ratio > 1) {
-        // Map is wider than it is tall (horizontal)
-        minimap_height = (int)(MAP_SIZE / map_aspect_ratio);
-    } else {
-        // Map is taller than it is wide (vertical)
-        minimap_width = (int)(MAP_SIZE * map_aspect_ratio);
-    }
-    int *img = (int *)data->minimap_addr;
-
-    // Adjust the step size for more accurate ray casting
-    double stepSize = 0.01; // Adjust this value as needed
-
-    // Iterate through rays within the FOV
-    double fov = 60 * (M_PI / 180); // 60 degrees FOV in radians
-    for (double angle = -fov / 2; angle <= fov / 2; angle += stepSize) {
-        double rayDirX = dirX * cos(angle) - dirY * sin(angle);
-        double rayDirY = dirX * sin(angle) + dirY * cos(angle);
-
-        double mapX = posX;
-        double mapY = posY;
-
-        // Ray casting loop
-        while (data->tab[(int)mapY][(int)mapX] != '1') { // Continue until a wall is hit
-            mapX += rayDirX * stepSize;
-            mapY += rayDirY * stepSize;
-
-            // Calculate the corresponding minimap coordinates relative to the player's position
-            int minimapX = (int)((mapX - posX) * (minimap_width / (double)longest));
-            int minimapY = (int)((mapY - posY) * (minimap_height / (double)data->nb_lines));
-
-            // Calculate the position on the minimap to draw the ray
-            int minimapIndexX = (int)(data->player->posX * (minimap_width / (double)longest)) + minimapX;
-            int minimapIndexY = (int)(data->player->posY * (minimap_height / (double)data->nb_lines)) + minimapY;
-
-            // Check bounds for minimap position
-            if (minimapIndexX >= 0 && minimapIndexX < minimap_width && minimapIndexY >= 0 && minimapIndexY < minimap_height) {
-                int minimapIndex = minimapIndexY * minimap_width + minimapIndexX;
-                img[minimapIndex] = 0xFF0000; // Set pixel color for the ray
-            } else {
-                // If the ray goes out of bounds, stop casting this ray
-                break;
-            }
-        }
-    }
+	pos_x = data->player->pos_x;
+	pos_y = data->player->pos_y;
+	dir_x = data->player->dir_x;
+	dir_y = data->player->dir_y;
+	longest = ft_longest_line(data);
+	map_aspect_ratio = (double)longest / (double)data->nb_lines;
+	minimap_width = MAP_SIZE;
+	minimap_height = MAP_SIZE;
+	if (map_aspect_ratio > 1)
+		minimap_height = (int)(MAP_SIZE / map_aspect_ratio);
+	else
+		minimap_width = (int)(MAP_SIZE * map_aspect_ratio);
+	img = (int *)data->minimap_addr;
+	step_size = 0.01;
+	fov = 60 * (M_PI / 180);
+	angle = -fov / 2;
+	while (angle <= fov / 2)
+	{
+		raydir_x = dir_x * cos(angle) - dir_y * sin(angle);
+		raydir_y = dir_x * sin(angle) + dir_y * cos(angle);
+		map_x = pos_x;
+		map_y = pos_y;
+		while (data->tab[(int)map_y][(int)map_x] != '1')
+		{
+			map_x += raydir_x * step_size;
+			map_y += raydir_y * step_size;
+			minimap_x = (int)((map_x - pos_x) * (minimap_width
+						/ (double)longest));
+			minimap_y = (int)((map_y - pos_y) * (minimap_height
+						/ (double)data->nb_lines));
+			minimap_index_x = (int)(data->player->pos_x * (minimap_width
+						/ (double)longest)) + minimap_x;
+			minimap_index_y = (int)(data->player->pos_y * (minimap_height
+						/ (double)data->nb_lines)) + minimap_y;
+			if (minimap_index_x >= 0 && minimap_index_x < minimap_width
+				&& minimap_index_y >= 0 && minimap_index_y < minimap_height)
+			{
+				minimap_index = minimap_index_y * minimap_width
+					+ minimap_index_x;
+				img[minimap_index] = 0xFF0000;
+			}
+			else
+				break ;
+		}
+		angle += step_size;
+	}
 }

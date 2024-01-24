@@ -6,149 +6,190 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:37:38 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/23 19:03:05 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:55:00 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static void	drawVerticalLine(t_data *data, int x, int drawStart, int drawEnd,
-		int color)
+static void	draw_vertical_line(t_data *data, int x, int draw_start,
+		int draw_end, int color)
 {
-	int *img = (int *)data->addr; // Utiliser data->addr
-	for (int y = drawStart; y < drawEnd; y++)
+	int	*img;
+	int	y;
+
+	img = (int *)data->addr;
+	y = draw_start - 1;
+	while (++y < draw_end)
 	{
 		if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
-		{
 			img[y * WIDTH + x] = color;
-		}
 	}
 }
 
-void performRaycasting(t_data *data) {
-    // int color;
-	/* data->floor_color = 0x006400; // Dark Green
-	data->ceiling_color = 0x87CEFA; // Sky Blue */
+void	perform_raycasting(t_data *data)
+{
+	double	raydir_x;
+	double	raydir_y;
+	int		map_x;
+	int		map_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	perp_wall_dist;
+	int		step_x;
+	int		step_y;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		tex_index;
+	double	wall_x;
+	int		tex_width;
+	int		tex_x;
+	int		tex_y;
+	int		tex_height;
+	int		d;
+	int		color;
+	double	camera_x;
+	int		x;
+	int		y;
+	int		side;
+	int		hit;
 
-    // color = 0x000000;
-    for (int x = 0; x < WIDTH; x++) {
-        // Calculate position and direction for the ray
-        double cameraX = 2 * x / (double)WIDTH - 1; // x-coordinate in camera space
-        double rayDirX = data->player->dirX + data->player->planeX * cameraX;
-        double rayDirY = data->player->dirY + data->player->planeY * cameraX;
-
-        // Initialize map coordinates with player's position
-        int mapX = (int)data->player->posX;
-        int mapY = (int)data->player->posY;
-
-        // Length of ray from current position to next x or y-side
-        double sideDistX;
-        double sideDistY;
-
-        // Length of ray from one x or y-side to next x or y-side
-        double deltaDistX = fabs(rayDirX) < 1e-6 ? 1e30 : fabs(1 / rayDirX);
-        double deltaDistY = fabs(rayDirY) < 1e-6 ? 1e30 : fabs(1 / rayDirY);
-
-        double perpWallDist;
-
-        // Direction to step in x or y-direction (either +1 or -1)
-        int stepX;
-        int stepY;
-
-        int hit = 0; // Was there a wall hit?
-        int side; // Was a NS or a EW wall hit?
-
-        // Calculate step and initial sideDist
-        if (rayDirX < 0) {
-            stepX = -1;
-            sideDistX = (data->player->posX - mapX) * deltaDistX;
-        } else {
-            stepX = 1;
-            sideDistX = (mapX + 1.0 - data->player->posX) * deltaDistX;
-        }
-        if (rayDirY < 0) {
-            stepY = -1;
-            sideDistY = (data->player->posY - mapY) * deltaDistY;
-        } else {
-            stepY = 1;
-            sideDistY = (mapY + 1.0 - data->player->posY) * deltaDistY;
-        }
-
-        // Perform DDA
-        while (hit == 0) {
-            // Jump to next map square, OR in x-direction, OR in y-direction
-            if (sideDistX < sideDistY) {
-                sideDistX += deltaDistX;
-                mapX += stepX;
-                side = 0;
-            } else {
-                sideDistY += deltaDistY;
-                mapY += stepY;
-                side = 1;
-            }
-            // Check if ray has hit a wall
-            if (mapX >= 0 && mapX < WIDTH && mapY >= 0 && mapY < HEIGHT) {
-                if (data->tab[mapY][mapX] == '1') { // Note the swap of mapX and mapY
-                    hit = 1;
-                }
-            } else {
-                hit = 1; // If out of bounds, treat it as a wall hit to prevent infinite loop
-            }
-        }
-
-        // Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
-        if (side == 0) perpWallDist = (mapX - data->player->posX + (1 - stepX) / 2) / rayDirX;
-        else           perpWallDist = (mapY - data->player->posY + (1 - stepY) / 2) / rayDirY;
-
-        // Calculate height of line to draw on screen
-        int lineHeight = (int)(HEIGHT / perpWallDist);
-
-        // Calculate lowest and highest pixel to fill in current stripe
-        int drawStart = (int)(((double)HEIGHT - (double)lineHeight) / 2.0);
-        if (drawStart < 0) drawStart = 0;
-        int drawEnd = lineHeight / 2 + HEIGHT / 2;
-        if (drawEnd >= HEIGHT) drawEnd = HEIGHT - 1;
-
-        // Draw the pixels of the stripe as a vertical line
-        // drawVerticalLine(data, x, drawStart, drawEnd, color);
-
-        int texIndex;
-        if (side == 0) texIndex = (stepX > 0) ? TEXTURE_EAST : TEXTURE_WEST;
-        else texIndex = (stepY > 0) ? TEXTURE_SOUTH : TEXTURE_NORTH;
-
-        double wallX; 
-        if (side == 0) wallX = data->player->posY + perpWallDist * rayDirY;
-        else wallX = data->player->posX + perpWallDist * rayDirX;
-        wallX -= floor(wallX);
-        int texWidth = data->texture[texIndex].width;
-
-        // x coordinate on the texture
-        int texX = (int)(wallX * (double)(texWidth));
-        if((side == 0 && rayDirX < 0) || (side == 1 && rayDirY > 0)) {
-            texX = texWidth - texX - 1;
-        }
-        texX = texX % texWidth;
-        int texHeight = data->texture[texIndex].height;
-        for (int y = drawStart; y < drawEnd; y++) {
-            int d = y * 256 - HEIGHT * 128 + lineHeight * 128;
-            int texY = (d / lineHeight) * (texHeight / 256);
-            if (texY < 0) texY = 0;
-            if (texY >= texHeight) texY = texHeight - 1;
-            
-            int color = data->texture[texIndex].data[texY * data->texture[texIndex].width + texX];
-            drawVerticalLine(data, x, y, y + 1, color);
-        }
-		for (int y = 0; y < HEIGHT; y++) {
-            if (y < drawStart) {
-                // Above the wall, draw the ceiling
-                drawVerticalLine(data, x, y, y + 1, data->ceiling_color);
-            } else if (y > drawEnd) {
-                // Below the wall, draw the floor
-                drawVerticalLine(data, x, y, y + 1, data->floor_color);
-            }
-        }
-    }
-
-    // After drawing all the vertical lines for every x, put the image to the window
-    mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	x = -1;
+	while (++x < WIDTH)
+	{
+		// Calculate position and direction for the ray
+		camera_x = 2 * x / (double)WIDTH - 1;
+		// x-coordinate in camera space
+		raydir_x = data->player->dir_x + data->player->planeX * camera_x;
+		raydir_y = data->player->dir_y + data->player->planeY * camera_x;
+		// Initialize map coordinates with player's position
+		map_x = (int)data->player->pos_x;
+		map_y = (int)data->player->pos_y;
+		// Length of ray from current position to next x or y-side
+		// Length of ray from one x or y-side to next x or y-side
+		if (fabs(raydir_x) < 1e-6)
+			delta_dist_x = 1e30;
+		else
+			delta_dist_x = fabs(1 / raydir_x);
+		if (fabs(raydir_y) < 1e-6)
+			delta_dist_y = 1e30;
+		else
+			delta_dist_y = fabs(1 / raydir_y);
+		// Direction to step in x or y-direction (either +1 or -1)
+		hit = 0;// Was there a wall hit?
+		// Calculate step and initial sideDist
+		if (raydir_x < 0)
+		{
+			step_x = -1;
+			side_dist_x = (data->player->pos_x - map_x) * delta_dist_x;
+		}
+		else
+		{
+			step_x = 1;
+			side_dist_x = (map_x + 1.0 - data->player->pos_x) * delta_dist_x;
+		}
+		if (raydir_y < 0)
+		{
+			step_y = -1;
+			side_dist_y = (data->player->pos_y - map_y) * delta_dist_y;
+		}
+		else
+		{
+			step_y = 1;
+			side_dist_y = (map_y + 1.0 - data->player->pos_y) * delta_dist_y;
+		}
+		// Perform DDA
+		while (hit == 0)
+		{
+			// Jump to next map square, OR in x-direction, OR in y-direction
+			if (side_dist_x < side_dist_y)
+			{
+				side_dist_x += delta_dist_x;
+				map_x += step_x;
+				side = 0;
+			}
+			else
+			{
+				side_dist_y += delta_dist_y;
+				map_y += step_y;
+				side = 1;
+			}
+			// Check if ray has hit a wall
+			if (map_x >= 0 && map_x < WIDTH && map_y >= 0 && map_y < HEIGHT)
+			{
+				if (data->tab[map_y][map_x] == '1')
+					hit = 1;
+			}
+			else
+				hit = 1;
+		}
+		// Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
+		if (side == 0)
+			perp_wall_dist = (map_x - data->player->pos_x + (1 - step_x) / 2)
+				/ raydir_x;
+		else
+			perp_wall_dist = (map_y - data->player->pos_y + (1 - step_y) / 2)
+				/ raydir_y;
+		// Calculate height of line to draw on screen
+		line_height = (int)(HEIGHT / perp_wall_dist);
+		// Calculate lowest and highest pixel to fill in current stripe
+		draw_start = (int)(((double)HEIGHT - (double)line_height) / 2.0);
+		if (draw_start < 0)
+			draw_start = 0;
+		draw_end = line_height / 2 + HEIGHT / 2;
+		if (draw_end >= HEIGHT)
+			draw_end = HEIGHT - 1;
+		// Draw the pixels of the stripe as a vertical line
+		// draw_vertical_line(data, x, draw_start, draw_end, color);
+		if (side == 0)
+		{
+			if (step_x > 0)
+				tex_index = TEXTURE_EAST;
+			else
+				tex_index = TEXTURE_WEST;
+		}
+		else
+		{
+			if (step_y > 0)
+				tex_index = TEXTURE_SOUTH;
+			else
+				tex_index = TEXTURE_NORTH;
+		}
+		if (side == 0)
+			wall_x = data->player->pos_y + perp_wall_dist * raydir_y;
+		else
+			wall_x = data->player->pos_x + perp_wall_dist * raydir_x;
+		wall_x -= floor(wall_x);
+		tex_width = data->texture[tex_index].width;
+		tex_x = (int)(wall_x * (double)(tex_width));
+		if ((side == 0 && raydir_x < 0) || (side == 1 && raydir_y > 0))
+			tex_x = tex_width - tex_x - 1;
+		tex_x = tex_x % tex_width;
+		tex_height = data->texture[tex_index].height;
+		y = draw_start - 1;
+		while (++y < draw_end)
+		{
+			d = y * 256 - HEIGHT * 128 + line_height * 128;
+			tex_y = ((d / line_height) * (tex_height / 256)) % tex_height;
+			if (tex_y < 0)
+				tex_y = 0;
+			if (tex_y >= tex_height)
+				tex_y = tex_height - 1;
+			color = data->texture[tex_index].data[tex_y
+				* data->texture[tex_index].width + tex_x];
+			draw_vertical_line(data, x, y, y + 1, color);
+		}
+		y = -1;
+		while (++y < HEIGHT)
+		{
+			if (y < draw_start)
+				draw_vertical_line(data, x, y, y + 1, data->ceiling_color);
+			else if (y > draw_end)
+				draw_vertical_line(data, x, y, y + 1, data->floor_color);
+		}
+	}
+	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }

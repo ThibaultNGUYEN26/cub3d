@@ -3,13 +3,12 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
+#    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/24 17:16:17 by rchbouki         ###   ########.fr        #
+#    Updated: 2024/01/24 20:16:06 by thibault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 NAME		=	cub3d
 SOURCES		=	./src
