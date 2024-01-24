@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:37:38 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/24 19:55:00 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/24 20:30:57 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void	perform_raycasting(t_data *data)
 		while (++y < draw_end)
 		{
 			d = y * 256 - HEIGHT * 128 + line_height * 128;
-			tex_y = ((d / line_height) * (tex_height / 256)) % tex_height;
+			tex_y = ((d / 256) * tex_height) / line_height;
 			if (tex_y < 0)
 				tex_y = 0;
 			if (tex_y >= tex_height)
