@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 23:34:14 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/24 18:30:34 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/24 22:41:10 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	ft_player_init(t_data *data)
 	}
 }
 
-static int	map_collision(t_data *data, double newX, double newY)
+static int	map_collision(t_data *data, double new_x, double new_y)
 {
 	int		map_x;
 	int		map_y;
@@ -83,15 +83,15 @@ static int	map_collision(t_data *data, double newX, double newY)
 	int		adj_y;
 	double	threshold;
 
-	map_x = (int)floor(newX);
-	map_y = (int)floor(newY);
+	map_x = (int)floor(new_x);
+	map_y = (int)floor(new_y);
+	frac_x = new_x - map_x;
+	frac_y = new_y - map_y;
 	if (map_x < 0 || map_x >= WIDTH || map_y < 0 || map_y >= HEIGHT)
 		return (1);
 	if (data->tab[map_y][map_x] == '1')
 		return (1);
 	threshold = 0.07;
-	frac_x = newX - map_x;
-	frac_y = newY - map_y;
 	if ((frac_x > 1 - threshold || frac_x < threshold) && (frac_y > 1
 			- threshold || frac_y < threshold))
 	{
@@ -108,9 +108,7 @@ static int	map_collision(t_data *data, double newX, double newY)
 		{
 			if (data->tab[map_y][map_x + adj_x] == '1' && data->tab[map_y
 				+ adj_y][map_x] == '1')
-			{
 				return (1);
-			}
 		}
 	}
 	return (0);
