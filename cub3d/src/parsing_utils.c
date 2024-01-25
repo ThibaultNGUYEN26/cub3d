@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:00:49 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/24 18:26:52 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/24 23:59:31 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_is_wspaces(char c)
 	return (1);
 }
 
-void	error_msg(t_data *data, int *var, char **var_char, char *buffer)
+void	error_msg(t_data *data, t_var *var, char *buffer)
 {
 	if (data->texture->t_north)
 		free(data->texture->t_north);
@@ -31,8 +31,9 @@ void	error_msg(t_data *data, int *var, char **var_char, char *buffer)
 	if (data->texture->t_west)
 		free(data->texture->t_west);
 	free(data);
+	free(var->var_tab);
+	free(var->var_char);
 	free(var);
-	free(var_char);
 	free(buffer);
 	printf(RED "[ERROR]" YELLOW " Invalid Map.\n" EOC);
 	exit(EXIT_FAILURE);
@@ -40,20 +41,20 @@ void	error_msg(t_data *data, int *var, char **var_char, char *buffer)
 
 /* can't have anything after r,g,b besides spaces 
 and if we've reached the end of the file => no map => error */
-int	check_color_utils(char *buffer, int *k)
+int	color_utils(char *buffer, int *k)
 {
 	while (buffer[*k] != '\n')
 	{
 		if ((buffer[*k] != '\f' && buffer[*k] != '\t' && buffer[*k] != '\r'
 				&& buffer[*k] != '\v' && buffer[*k] != ' ')
 			|| buffer[*k] == '\0')
-			return (-1);
+			return (0);
 		*k += 1;
 	}
 	return (1);
 }
 
-int	affect_color(char *str, int *value)
+int	affect(char *str, int *value)
 {
 	*value = ft_atoi(str);
 	free(str);
@@ -62,7 +63,7 @@ int	affect_color(char *str, int *value)
 	return (1);
 }
 
-unsigned int	ft_convert_color(int r, int g, int b)
+unsigned int	ft_convert_color(t_color color)
 {
-	return ((r << 16) | (g << 8) | b);
+	return ((color.r << 16) | (color.g << 8) | color.b);
 }

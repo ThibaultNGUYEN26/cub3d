@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
+#    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/24 20:16:06 by thibault         ###   ########.fr        #
+#    Updated: 2024/01/25 00:42:50 by rchbouki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCS		=	libft/ft_strcmp.c \
 				ft_parsing.c \
 				parsing_utils.c \
 				check_parsing.c \
+				check_parsing_2.c \
 				ft_fill_tab.c \
 				ft_mlx_init.c \
 				ft_draw_minimap.c \
