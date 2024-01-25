@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 23:34:14 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/24 22:41:10 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:18:25 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,29 @@ static void	ft_player_direction(t_data *data, char dir)
 	{
 		data->player->dir_x = 0;
 		data->player->dir_y = -1;
-		data->player->planeX = tan(fov / 2.0);
-		data->player->planeY = 0;
+		data->player->plane_x = tan(fov / 2.0);
+		data->player->plane_y = 0;
 	}
 	else if (dir == 'S')
 	{
 		data->player->dir_x = 0;
 		data->player->dir_y = 1;
-		data->player->planeX = -tan(fov / 2.0);
-		data->player->planeY = 0;
+		data->player->plane_x = -tan(fov / 2.0);
+		data->player->plane_y = 0;
 	}
 	else if (dir == 'W')
 	{
 		data->player->dir_x = -1;
 		data->player->dir_y = 0;
-		data->player->planeX = 0;
-		data->player->planeY = -tan(fov / 2.0);
+		data->player->plane_x = 0;
+		data->player->plane_y = -tan(fov / 2.0);
 	}
 	else
 	{
 		data->player->dir_x = 1;
 		data->player->dir_y = 0;
-		data->player->planeX = 0;
-		data->player->planeY = tan(fov / 2.0);
+		data->player->plane_x = 0;
+		data->player->plane_y = tan(fov / 2.0);
 	}
 }
 
@@ -118,7 +118,6 @@ void	update_player_position(int keycode, t_data *data)
 {
 	double	strafe_step_x;
 	double	strafe_step_y;
-	double	olddir_x;
 	double	old_plane_x;
 	double	move_step_x;
 	double	move_step_y;
@@ -127,8 +126,8 @@ void	update_player_position(int keycode, t_data *data)
 
 	move_step_x = data->player->dir_x * MOVE_SPEED;
 	move_step_y = data->player->dir_y * MOVE_SPEED;
-	strafe_step_x = data->player->planeX * MOVE_SPEED;
-	strafe_step_y = data->player->planeY * MOVE_SPEED;
+	strafe_step_x = data->player->plane_x * MOVE_SPEED;
+	strafe_step_y = data->player->plane_y * MOVE_SPEED;
 	if (keycode == KEY_W || keycode == KEY_S)
 	{
 		if (keycode == KEY_S)
@@ -175,28 +174,28 @@ void	update_player_position(int keycode, t_data *data)
 	}
 	if (keycode == KEY_LEFT)
 	{
-		olddir_x = data->player->dir_x;
+		data->player->olddir_x = data->player->dir_x;
 		data->player->dir_x = data->player->dir_x * cos(-ROT_SPEED)
 			- data->player->dir_y * sin(-ROT_SPEED);
-		data->player->dir_y = olddir_x * sin(-ROT_SPEED) + data->player->dir_y
+		data->player->dir_y = data->player->olddir_x * sin(-ROT_SPEED) + data->player->dir_y
 			* cos(-ROT_SPEED);
-		old_plane_x = data->player->planeX;
-		data->player->planeX = data->player->planeX * cos(-ROT_SPEED)
-			- data->player->planeY * sin(-ROT_SPEED);
-		data->player->planeY = old_plane_x * sin(-ROT_SPEED)
-			+ data->player->planeY * cos(-ROT_SPEED);
+		old_plane_x = data->player->plane_x;
+		data->player->plane_x = data->player->plane_x * cos(-ROT_SPEED)
+			- data->player->plane_y * sin(-ROT_SPEED);
+		data->player->plane_y = old_plane_x * sin(-ROT_SPEED)
+			+ data->player->plane_y * cos(-ROT_SPEED);
 	}
 	if (keycode == KEY_RIGHT)
 	{
-		olddir_x = data->player->dir_x;
+		data->player->olddir_x = data->player->dir_x;
 		data->player->dir_x = data->player->dir_x * cos(ROT_SPEED)
 			- data->player->dir_y * sin(ROT_SPEED);
-		data->player->dir_y = olddir_x * sin(ROT_SPEED) + data->player->dir_y
+		data->player->dir_y = data->player->olddir_x * sin(ROT_SPEED) + data->player->dir_y
 			* cos(ROT_SPEED);
-		old_plane_x = data->player->planeX;
-		data->player->planeX = data->player->planeX * cos(ROT_SPEED)
-			- data->player->planeY * sin(ROT_SPEED);
-		data->player->planeY = old_plane_x * sin(ROT_SPEED)
-			+ data->player->planeY * cos(ROT_SPEED);
+		old_plane_x = data->player->plane_x;
+		data->player->plane_x = data->player->plane_x * cos(ROT_SPEED)
+			- data->player->plane_y * sin(ROT_SPEED);
+		data->player->plane_y = old_plane_x * sin(ROT_SPEED)
+			+ data->player->plane_y * cos(ROT_SPEED);
 	}
 }

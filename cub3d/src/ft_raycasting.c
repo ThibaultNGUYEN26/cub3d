@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:37:38 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/24 21:54:51 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:18:25 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ void	perform_raycasting(t_data *data)
 		// Calculate position and direction for the ray
 		camera_x = 2 * x / (double)WIDTH - 1;
 		// x-coordinate in camera space
-		raydir_x = data->player->dir_x + data->player->planeX * camera_x;
-		raydir_y = data->player->dir_y + data->player->planeY * camera_x;
+		raydir_x = data->player->dir_x + data->player->plane_x * camera_x;
+		raydir_y = data->player->dir_y + data->player->plane_y * camera_x;
 		// Initialize map coordinates with player's position
 		map_x = (int)data->player->pos_x;
 		map_y = (int)data->player->pos_y;
