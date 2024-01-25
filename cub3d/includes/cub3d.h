@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/25 22:31:50 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/26 00:01:09 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ typedef struct	s_player
 	double		pos_y;
 	double		dir_x;
 	double		dir_y;
-	double		olddir_x;
 	double		plane_x;
 	double		plane_y;
+	double		olddir_x;
+	double		old_plane_x;
 }	t_player;
 
 typedef struct	s_texture
@@ -92,6 +93,7 @@ typedef struct	s_data
 	int			floor_color;
 	int			ceiling_color;
 	int			prev_mouse_x;
+	int			prev_mouse_y;
 	int			forward;
 	int			backward;
 	int			left;

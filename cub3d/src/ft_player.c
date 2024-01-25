@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 23:34:14 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/25 20:18:25 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/25 23:47:03 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ void	update_player_position(int keycode, t_data *data)
 {
 	double	strafe_step_x;
 	double	strafe_step_y;
-	double	old_plane_x;
 	double	move_step_x;
 	double	move_step_y;
 	double	newpos_x;
@@ -179,10 +178,10 @@ void	update_player_position(int keycode, t_data *data)
 			- data->player->dir_y * sin(-ROT_SPEED);
 		data->player->dir_y = data->player->olddir_x * sin(-ROT_SPEED) + data->player->dir_y
 			* cos(-ROT_SPEED);
-		old_plane_x = data->player->plane_x;
+		data->player->old_plane_x = data->player->plane_x;
 		data->player->plane_x = data->player->plane_x * cos(-ROT_SPEED)
 			- data->player->plane_y * sin(-ROT_SPEED);
-		data->player->plane_y = old_plane_x * sin(-ROT_SPEED)
+		data->player->plane_y = data->player->old_plane_x * sin(-ROT_SPEED)
 			+ data->player->plane_y * cos(-ROT_SPEED);
 	}
 	if (keycode == KEY_RIGHT)
@@ -192,10 +191,10 @@ void	update_player_position(int keycode, t_data *data)
 			- data->player->dir_y * sin(ROT_SPEED);
 		data->player->dir_y = data->player->olddir_x * sin(ROT_SPEED) + data->player->dir_y
 			* cos(ROT_SPEED);
-		old_plane_x = data->player->plane_x;
+		data->player->old_plane_x = data->player->plane_x;
 		data->player->plane_x = data->player->plane_x * cos(ROT_SPEED)
 			- data->player->plane_y * sin(ROT_SPEED);
-		data->player->plane_y = old_plane_x * sin(ROT_SPEED)
+		data->player->plane_y = data->player->old_plane_x * sin(ROT_SPEED)
 			+ data->player->plane_y * cos(ROT_SPEED);
 	}
 }

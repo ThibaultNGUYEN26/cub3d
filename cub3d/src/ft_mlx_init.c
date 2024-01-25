@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:28:33 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/25 22:25:29 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/26 00:35:06 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ int	update_player_state(t_data *data)
 		update_player_position(KEY_LEFT, data);
 	if (data->turn_right)
 		update_player_position(KEY_RIGHT, data);
-	if (data->forward || data->backward || data->left || data->right || data->turn_left || data->turn_right)
+	if (data->forward || data->backward || data->left || data->right
+		|| data->turn_left || data->turn_right)
 	{
 		perform_raycasting(data);
 		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
@@ -120,80 +121,41 @@ int	update_player_state(t_data *data)
 	return (0);
 }
 
-/* int	update_player_state(t_data *data)
+int	mouse_move(int x, int y, t_data *data)
 {
-	int	action_performed;
+	int			delta_x;
+	double		rotation_angle;
+	double		sensitivity;
+	static int	delta_accumulator = 0;
+	static int	frame_count = 0;
 
-	action_performed = 0;
-	if (data->forward)
+	(void)y;
+	delta_x = x - data->prev_mouse_x;
+	sensitivity = 0.005;
+	delta_accumulator += delta_x;
+	frame_count++;
+	if (frame_count >= 50)
 	{
-		update_player_position(KEY_W, data);
-		action_performed = 1;
-	}
-	if (data->backward)
-	{
-		update_player_position(KEY_S, data);
-		action_performed = 1;
-	}
-	if (data->left)
-	{
-		update_player_position(KEY_A, data);
-		action_performed = 1;
-	}
-	if (data->right)
-	{
-		update_player_position(KEY_D, data);
-		action_performed = 1;
-	}
-	if (data->turn_left)
-	{
-		update_player_position(KEY_LEFT, data);
-		action_performed = 1;
-	}
-	if (data->turn_right)
-	{
-		update_player_position(KEY_RIGHT, data);
-		action_performed = 1;
-	}
-	if (action_performed)
-	{
+		rotation_angle = delta_accumulator * sensitivity;
+		data->player->olddir_x = data->player->dir_x;
+		data->player->old_plane_x = data->player->plane_x;
+		data->player->dir_x = data->player->olddir_x * cos(rotation_angle)
+			- data->player->dir_y * sin(rotation_angle);
+		data->player->dir_y = data->player->olddir_x * sin(rotation_angle)
+			+ data->player->dir_y * cos(rotation_angle);
+		data->player->plane_x = data->player->old_plane_x * cos(rotation_angle)
+			- data->player->plane_y * sin(rotation_angle);
+		data->player->plane_y = data->player->old_plane_x * sin(rotation_angle)
+			+ data->player->plane_y * cos(rotation_angle);
+		delta_accumulator = 0;
+		frame_count = 0;
 		perform_raycasting(data);
 		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 		draw_minimap(data);
 		mlx_put_image_to_window(data->mlx, data->win, data->minimap_img,
 			data->minimap_x, data->minimap_y);
 	}
-	return (0);
-} */
-
-int	mouse_move(int x, int y, t_data *data)
-{
-	int		delta_x;
-	double	rotation_angle;
-	double	olddir_x;
-	double	old_plane_x;
-	double	sensitivity;
-
-	(void)y;
-	delta_x = x - data->prev_mouse_x;
-	sensitivity = 0.005;
-	rotation_angle = delta_x * sensitivity;
-	olddir_x = data->player->dir_x;
-	old_plane_x = data->player->plane_x;
-	data->player->dir_x = olddir_x * cos(rotation_angle) - data->player->dir_y
-		* sin(rotation_angle);
-	data->player->dir_y = olddir_x * sin(rotation_angle) + data->player->dir_y
-		* cos(rotation_angle);
-	data->player->plane_x = old_plane_x * cos(rotation_angle)
-		- data->player->plane_y * sin(rotation_angle);
-	data->player->plane_y = old_plane_x * sin(rotation_angle)
-		+ data->player->plane_y * cos(rotation_angle);
 	data->prev_mouse_x = x;
-	perform_raycasting(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
-	draw_minimap(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->minimap_img,
-		data->minimap_x, data->minimap_y);
 	return (0);
 }
 
@@ -221,7 +183,9 @@ void	ft_mlx_init(t_data *data)
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,
 			&data->line_length, &data->endian);
 	data->minimap_img = NULL;
-	data->prev_mouse_x = -1;
+	int x, y;
+	mlx_mouse_get_pos(data->mlx, data->win, &x, &y);
+	data->prev_mouse_x = x;
 	data->forward = 0;
 	data->backward = 0;
 	data->left = 0;
