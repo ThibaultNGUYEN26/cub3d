@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:00:49 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/24 23:59:31 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:25:05 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ int	color_utils(char *buffer, int *k)
 	return (1);
 }
 
-int	affect(char *str, int *value)
+int	affect(char *buffer, int *k, int i, int *value)
 {
+	char	*str;
+
+	str = ft_substr(buffer, i, *k - i);
 	*value = ft_atoi(str);
 	free(str);
 	if (*value < 0 || *value > 255)

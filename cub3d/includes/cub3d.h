@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/25 01:24:08 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:25:53 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ size_t			ft_strlcpy(char *dst, char *src, size_t dstsize);
 int				ft_is_wspaces(char c);
 void			error_msg(t_data *data, t_var *var, char *buffer);
 int				color_utils(char *buffer, int *k);
-int				affect(char *str, int *value);
+int				affect(char *buffer, int *k, int i, int *value);
 unsigned int	ft_convert_color(t_color color);
 
 int				ft_init_data(t_data **data);
@@ -142,6 +142,7 @@ int				element_loop(t_data *data, t_var *var, char *buffer, int *k);
 
 int				end_parsing(int *k, int start, t_var *var);
 int				buffer_switch(char *buffer, int *k, int *start);
+void			ft_affect_color(t_data *data, char *cmp, t_color color);
 
 t_data			*ft_launch_map(char *map);
 t_data			*ft_parsing(char *buffer);

@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:16:27 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/25 01:53:29 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:27:44 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,20 @@ int	check_color(t_data *data, char *buf, char *cmp, int *k)
 		ft_skip(buf, k, &i);
 		if (buf[*k] == ',')
 		{
-			if (j > 1 || (!j && !affect(ft_substr(buf, i, *k - i), &(c.r)))
-				|| (j == 1 && !affect(ft_substr(buf, i, *k - i), &(c.g))))
+			if (j > 1 || (!j && !affect(buf, k, i, &(c.r)))
+				|| (j == 1 && !affect(buf, k, i, &(c.g))))
 				return (-1);
 			*k += 1;
 		}
 		else if (buf[*k] == '\n' || ft_is_wspaces(buf[*k]))
 		{
-			if ((j == 2 && !affect(ft_substr(buf, i, *k - i), &(c.b)))
-				|| !color_utils(buf, k))
+			if ((j == 2 && !affect(buf, k, i, &(c.b))) || !color_utils(buf, k))
 				return (-1);
 		}
 		else
 			return (-1);
 	}
-	element_affect(data, cmp, ft_itoa(ft_convert_color(c)), 1);
+	ft_affect_color(data, cmp, c);
 	return (1);
 }
 
@@ -98,15 +97,13 @@ int	ft_check_element(char *buffer, int *k, t_data *data, char *cmp)
 	str = ft_substr(buffer, *k, len);
 	result = ft_strcmp(str, cmp);
 	free(str);
-	// checking for that its ONLY NO and not NONONONO => using the is_spaces
 	if (!result && ft_is_wspaces(buffer[*k + len]))
 	{
 		*k += len;
 		while (ft_is_wspaces(buffer[*k]))
 			*k += 1;
-		if (buffer[*k] == '\0' || buffer[*k] == '\n')	
+		if (buffer[*k] == '\0' || buffer[*k] == '\n')
 			return (-1);
-		// if we are not checking colors : we are checking textures
 		if (check_element_utils(buffer, k, data, cmp) == -1)
 			return (-1);
 	}
