@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/26 00:01:09 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/26 00:37:08 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,12 +150,24 @@ int				element_loop(t_data *data, t_var *var, char *buffer, int *k);
 int				end_parsing(int *k, int start, t_var *var);
 int				buffer_switch(char *buffer, int *k, int *start);
 void			ft_affect_color(t_data *data, char *cmp, t_color color);
+void			ft_skip_empty(t_data *data, char *buffer, int *k);
+void			ft_count_lines(char *buffer, int *k, t_data *data);
 
 t_data			*ft_launch_map(char *map);
+
 t_data			*ft_parsing(char *buffer);
 int				ft_check_element(char *buffer, int *k, t_data *data, char *cmp);
 int				check_color(t_data *data, char *buffer, char *cmp, int *k);
 void			element_affect(t_data *data, char *cmp, char *value, int test);
+
+void			ft_check_surroundings(char *buf, int *k, int *i, t_data *data);
+void			tab_init_utils(char *buffer, int *k, t_data *data);
+void			ft_check_player(t_data *data, int *player);
+void			check_line(t_data *data, int line_1, int line_2);
+
+void			ft_free_data(t_data *data, int i, char *buffer, char *msg);
+int				empty_line(char *str);
+int				ft_last_in_line(char *line);
 void			ft_create_tab(t_data *data, char *buffer, int k);
 
 void			ft_mlx_init(t_data *data);
