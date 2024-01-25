@@ -6,7 +6,7 @@
 #    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/25 00:42:50 by rchbouki         ###   ########.fr        #
+#    Updated: 2024/01/25 21:26:04 by rchbouki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS		=	libft/ft_strcmp.c \
 				parsing_utils.c \
 				check_parsing.c \
 				check_parsing_2.c \
+				fill_tab_utils.c \
 				ft_fill_tab.c \
 				ft_mlx_init.c \
 				ft_draw_minimap.c \
