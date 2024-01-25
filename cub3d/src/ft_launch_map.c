@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_launch_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/24 18:27:32 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/25 00:52:57 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ t_data	*ft_launch_map(char *map)
 	}
 	buffer[len] = '\0';
 	data = ft_parsing(buffer);
+	if (!data)
+	{
+		free(buffer);
+		printf(RED "[ERROR]" YELLOW " Allocation failure.\n" EOC);
+		exit(EXIT_FAILURE);
+	}
 	printf(GREEN "[INFO]" YELLOW " Initialization of the map...\n" EOC);
 	if (len == -1)
 	{

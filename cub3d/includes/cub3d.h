@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/25 22:28:16 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/25 22:31:50 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,26 @@ typedef struct	s_data
 	t_player	*player;
 }	t_data;
 
-enum TextureIndex {
-    TEXTURE_NORTH,
-    TEXTURE_SOUTH,
-    TEXTURE_WEST,
-    TEXTURE_EAST
+enum	TextureIndex
+{
+	TEXTURE_NORTH,
+	TEXTURE_SOUTH,
+	TEXTURE_WEST,
+	TEXTURE_EAST
 };
+
+typedef struct	s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}	t_color;
+
+typedef struct	s_var
+{
+	int		*var_tab;
+	char	**var_char;
+}	t_var;
 
 int				ft_strcmp(char *s1, char *s2);
 char			*ft_strdup(char *s);
@@ -120,15 +134,24 @@ char			*ft_itoa(int n);
 size_t			ft_strlcpy(char *dst, char *src, size_t dstsize);
 
 int				ft_is_wspaces(char c);
-void			error_msg(t_data *data, int *var, char **var_char, char *buffer);
-int				check_color_utils(char *buffer, int *k);
-int				affect_color(char *str, int *value);
-unsigned int	ft_convert_color(int r, int g, int b);
+void			error_msg(t_data *data, t_var *var, char *buffer);
+int				color_utils(char *buffer, int *k);
+int				affect(char *buffer, int *k, int i, int *value);
+unsigned int	ft_convert_color(t_color color);
 
+int				ft_init_data(t_data **data);
+int				ft_init_var(t_var **var);
 int				check_element_utils(char *buffer, int *k, t_data *data, char *cmp);
+void			ft_skip(char *buffer, int *k, int *start);
+int				element_loop(t_data *data, t_var *var, char *buffer, int *k);
+
+int				end_parsing(int *k, int start, t_var *var);
+int				buffer_switch(char *buffer, int *k, int *start);
+void			ft_affect_color(t_data *data, char *cmp, t_color color);
 
 t_data			*ft_launch_map(char *map);
 t_data			*ft_parsing(char *buffer);
+int				ft_check_element(char *buffer, int *k, t_data *data, char *cmp);
 int				check_color(t_data *data, char *buffer, char *cmp, int *k);
 void			element_affect(t_data *data, char *cmp, char *value, int test);
 void			ft_create_tab(t_data *data, char *buffer, int k);
