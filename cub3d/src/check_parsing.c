@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 20:39:24 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/25 01:15:29 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:29:59 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_init_data(t_data **data)
 int	ft_init_var(t_var **var)
 {
 	int	j;
-	
+
 	j = 0;
 	while (j < 6)
 		(*var)->var_tab[j++] = 0;
@@ -48,7 +48,6 @@ int	check_element_utils(char *buffer, int *k, t_data *data, char *cmp)
 {
 	int	end;
 
-	// if we are not checking colors : we are checking textures
 	if (ft_strcmp(cmp, "F") && ft_strcmp(cmp, "C"))
 	{
 		end = *k;
