@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/24 21:09:12 by thibault         ###   ########.fr       */
+/*   Updated: 2024/01/25 22:28:16 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # define KEY_D		100
 # define KEY_LEFT	65361
 # define KEY_RIGHT	65363
-# define MOVE_SPEED	0.1
-# define ROT_SPEED	0.05
+# define MOVE_SPEED	0.04
+# define ROT_SPEED	0.03
 # define M_PI		3.1415926536897932384626433832795028841971693993751058209749
 # define NUM_KEYS	256
 # define MAP_SIZE	150
@@ -43,6 +43,7 @@
 # include <math.h>
 # include <string.h>
 # include <limits.h>
+# include <X11/Xlib.h>
 
 typedef struct	s_player
 {
@@ -51,9 +52,8 @@ typedef struct	s_player
 	double		dir_x;
 	double		dir_y;
 	double		olddir_x;
-	double		olddir_y;
-	double		planeX;
-	double		planeY;
+	double		plane_x;
+	double		plane_y;
 }	t_player;
 
 typedef struct	s_texture
@@ -92,7 +92,12 @@ typedef struct	s_data
 	int			floor_color;
 	int			ceiling_color;
 	int			prev_mouse_x;
-	// t_texture	*texture;
+	int			forward;
+	int			backward;
+	int			left;
+	int			right;
+	int			turn_left;
+	int			turn_right;
 	t_texture	texture[4];
 	t_player	*player;
 }	t_data;
