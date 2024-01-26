@@ -3,8 +3,8 @@ SO ./textures/peach.xpm
 WE ./textures/luigi.xpm
 EA ./textures/bowser.xpm
 
-C 255,0,0
-F 0,255,0
+C 252,163,220
+F 254,187,3
 
 11111111111111111111
 10000000000000000001

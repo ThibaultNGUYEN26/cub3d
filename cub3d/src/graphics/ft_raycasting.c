@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_raycasting.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:48:00 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/26 19:58:40 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 21:55:58 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,16 @@ static void	init_textures(t_data *data, t_dda *dda, t_tex_dda *tex)
 
 static void	ft_draw(t_dda *dda, t_tex_dda *tex, t_data *data, int x)
 {
-	int	color;
-	int	y;
-	int	tex_y;
+	int				color;
+	int				y;
+	unsigned int	tex_y;
 
 	y = dda->draw_start - 1;
 	while (++y < dda->draw_end)
 	{
 		tex->d = y * 256 - HEIGHT * 128 + dda->line_height * 128;
 		tex_y = (unsigned int)((tex->d / 256) * tex->tex_height);
-		tex->tex_y = tex_y / dda->line_height;
+		tex->tex_y = tex_y / (unsigned int)dda->line_height;
 		if (tex->tex_y >= (unsigned int)tex->tex_height)
 			tex->tex_y = tex->tex_height - 1;
 		color = data->texture[tex->tex_index].data[tex->tex_y
