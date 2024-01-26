@@ -6,7 +6,7 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 23:26:07 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/26 00:05:32 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 15:22:00 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct	s_player
 	double		olddir_x;
 	double		plane_x;
 	double		plane_y;
+	double		old_plane_x;
 }	t_player;
 
 typedef struct	s_texture
@@ -99,9 +100,11 @@ typedef struct s_minimap
 	int		player_x;
 	int		player_y;
 	int		*img;
-	int		color;
 	int		x;
 	int		y;
+	int		index_x;
+	int		index_y;
+	int		index;
 }	t_minimap;
 
 typedef struct s_coord
