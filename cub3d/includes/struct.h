@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 23:26:07 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/26 20:10:52 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 21:33:07 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_data
 	t_player	*player;
 	int			delta_accumulator;
 	int			frame_count;
+	int			bonus;
 }	t_data;
 
 typedef struct s_color

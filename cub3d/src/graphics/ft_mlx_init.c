@@ -28,13 +28,7 @@ static int	update_player_state(t_data *data)
 		update_player_position(KEY_RIGHT, data);
 	if (data->forward || data->backward || data->left || data->right
 		|| data->turn_left || data->turn_right)
-	{
-		perform_raycasting(data);
-		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
-		draw_minimap(data);
-		mlx_put_image_to_window(data->mlx, data->win, data->minimap_img,
-			data->minimap_x, data->minimap_y);
-	}
+		ft_regenerate(data);
 	return (0);
 }
 
@@ -107,7 +101,8 @@ void	ft_mlx_init(t_data *data)
 	mlx_hook(data->win, 17, 0, ft_close_window, NULL);
 	mlx_hook(data->win, 2, 1L << 0, ft_key_hook, data);
 	mlx_hook(data->win, 3, 1L << 1, ft_key_release_hook, data);
-	mlx_hook(data->win, 6, 1L << 6, mouse_move, data);
+	if (data->bonus)
+		mlx_hook(data->win, 6, 1L << 6, mouse_move, data);
 	mlx_loop_hook(data->mlx, update_player_state, data);
 	ft_player_init(data);
 }

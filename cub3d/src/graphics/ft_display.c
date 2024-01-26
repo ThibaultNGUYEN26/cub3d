@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_display.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:45:41 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/26 20:09:09 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 21:37:54 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ void	ft_regenerate(t_data *data)
 {
 	perform_raycasting(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
-	draw_minimap(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->minimap_img,
-		data->minimap_x, data->minimap_y);
+	if (data->bonus)
+	{
+		draw_minimap(data);
+		mlx_put_image_to_window(data->mlx, data->win, data->minimap_img,
+			data->minimap_x, data->minimap_y);
+	}
 }

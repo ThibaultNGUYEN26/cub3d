@@ -3,14 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
+#    By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/26 19:56:16 by rchbouki         ###   ########.fr        #
+#    Updated: 2024/01/26 21:46:11 by thibnguy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	cub3d
+BONUS		=	cub3d_bonus
 SOURCES		=	./src
 OBJECTS		=	./bin
 INCLUDES	=	-I./includes \
@@ -41,6 +42,8 @@ SRCS		=	graphics/ft_display.c \
 				parsing/ft_launch_map.c \
 				parsing/ft_parsing.c \
 				parsing/parsing_utils.c
+
+SRCS_BONUS	=	${SRCS}
 
 OBJS		=	$(addprefix ${OBJECTS}/, $(SRCS:.c=.o))
 
@@ -91,14 +94,20 @@ ${NAME}: ${OBJS} ${OBJECTS}/${NAME}.o
 #norminette:
 #	@norminette | grep "Error!" > /dev/null && echo $(WHITE)"● [Norminette]: "$(RED)"KO\n"$(EOC) || echo $(WHITE)"● [Norminette]: "$(GREEN)"OK\n"$(EOC)
 
+bonus: ${BONUS}
+
+${BONUS}: ${OBJS} ${OBJECTS}/bonus/${BONUS}.o
+	@echo $(GREEN)"\n● Compilation du ${BONUS} (bonus)...\n"$(EOC)
+	@${CC} ${CFLAGS} -o ${BONUS} ${OBJS} ${OBJECTS}/bonus/${BONUS}.o ${LIBS}
+
 clean:
 	@echo ${RED}"● Deletion of binary files (.o)..."$(EOC)
 	@rm -rf ${OBJECTS}
 
 fclean: clean
 	@echo ${RED}"● Deletion of executables and libraries..."$(EOC)
-	@rm -rf ${NAME}
+	@rm -rf ${NAME} ${BONUS}
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus

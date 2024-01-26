@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:11:06 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/26 20:05:12 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 21:37:44 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 /* --- GRAPHICS --- */
 
 /* FT_DISPLAY */
-void			load_texture(t_data *data, int textureIndex, char *filePath);
 void			ft_regenerate(t_data *data);
+void			load_texture(t_data *data, int textureIndex, char *filePath);
 /* FT_DRAW_MINIMAP */
 void			draw_minimap(t_data *data);
 /* FT_MINI_RAYCAST */

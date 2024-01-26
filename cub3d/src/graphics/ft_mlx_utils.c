@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_mlx_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:35:26 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/26 16:41:06 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 21:34:31 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	ft_key_hook(int key, t_data *data)
 {
 	if (key == ESC)
 	{
-		mlx_destroy_image(data->mlx, data->minimap_img);
+		if (data->bonus)
+			mlx_destroy_image(data->mlx, data->minimap_img);
 		mlx_destroy_image(data->mlx, data->img);
 		free_textures(data);
 		ft_free_utils(data);

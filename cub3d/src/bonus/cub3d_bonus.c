@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.c                                            :+:      :+:    :+:   */
+/*   cub3d_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/29 17:10:47 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/26 21:37:51 by thibnguy         ###   ########.fr       */
+/*   Created: 2024/01/26 21:20:10 by thibnguy          #+#    #+#             */
+/*   Updated: 2024/01/26 21:48:40 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 int	main(int argc, char *argv[])
 {
@@ -22,7 +22,7 @@ int	main(int argc, char *argv[])
 		return (1);
 	}
 	data = ft_launch_map(argv[1]);
-	data->bonus = 0;
+	data->bonus = 1;
 	ft_mlx_init(data);
 	ft_regenerate(data);
 	mlx_loop(data->mlx);

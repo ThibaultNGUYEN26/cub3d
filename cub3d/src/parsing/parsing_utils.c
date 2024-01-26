@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:00:49 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/26 16:33:26 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 20:21:42 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ void	error_msg(t_data *data, t_var *var, char *buffer)
 	exit(EXIT_FAILURE);
 }
 
-/* can't have anything after r,g,b besides spaces 
-and if we've reached the end of the file => no map => error */
 int	color_utils(char *buffer, int *k)
 {
 	while (buffer[*k] != '\n')
