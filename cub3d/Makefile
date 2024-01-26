@@ -6,7 +6,7 @@
 #    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/25 21:26:04 by rchbouki         ###   ########.fr        #
+#    Updated: 2024/01/25 23:59:45 by rchbouki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,15 +25,16 @@ SRCS		=	libft/ft_strcmp.c \
 				libft/ft_atoi.c \
 				libft/ft_itoa.c \
 				libft/ft_strlcpy.c \
+				parsing/ft_parsing.c \
+				parsing/parsing_utils.c \
+				parsing/check_parsing.c \
+				parsing/check_parsing_2.c \
+				parsing/fill_tab_utils.c \
+				parsing/ft_fill_tab.c \
 				ft_launch_map.c \
-				ft_parsing.c \
-				parsing_utils.c \
-				check_parsing.c \
-				check_parsing_2.c \
-				fill_tab_utils.c \
-				ft_fill_tab.c \
 				ft_mlx_init.c \
 				ft_draw_minimap.c \
+				ft_mini_raycast.c \
 				ft_player.c \
 				ft_raycasting.c
 
