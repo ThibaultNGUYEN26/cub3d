@@ -6,11 +6,11 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:09:28 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/25 23:17:10 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:33:15 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 static int	ft_check_extension(char *map)
 {

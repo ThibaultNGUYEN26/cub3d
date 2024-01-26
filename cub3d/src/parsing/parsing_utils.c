@@ -6,11 +6,11 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:00:49 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/25 20:25:05 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:33:26 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 int	ft_is_wspaces(char c)
 {

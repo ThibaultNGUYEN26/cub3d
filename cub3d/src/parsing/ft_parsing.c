@@ -6,11 +6,11 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:16:27 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/25 20:27:44 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:33:21 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 static int	ft_init_parsing(t_data **data, t_var **var, int *i, int *k)
 {

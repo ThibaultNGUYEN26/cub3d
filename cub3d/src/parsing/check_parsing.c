@@ -6,11 +6,11 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 20:39:24 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/25 20:29:59 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:33:01 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 int	ft_init_data(t_data **data)
 {

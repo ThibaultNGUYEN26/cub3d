@@ -6,7 +6,7 @@
 #    By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/25 23:59:45 by rchbouki         ###   ########.fr        #
+#    Updated: 2024/01/26 19:56:16 by rchbouki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,27 +16,31 @@ OBJECTS		=	./bin
 INCLUDES	=	-I./includes \
 				-I./minilibx-linux
 
-SRCS		=	libft/ft_strcmp.c \
+SRCS		=	graphics/ft_display.c \
+				graphics/ft_draw_minimap.c \
+				graphics/ft_mini_raycast.c \
+				graphics/ft_mlx_init.c \
+				graphics/ft_mlx_utils.c \
+				graphics/ft_player_utils.c \
+				graphics/ft_player.c \
+				graphics/ft_raycast_utils.c \
+				graphics/ft_raycasting.c \
+				libft/ft_atoi.c \
+				libft/ft_itoa.c \
+				libft/ft_strcmp.c \
 				libft/ft_strdup.c \
 				libft/ft_strdup2.c \
 				libft/ft_strjoin.c \
+				libft/ft_strlcpy.c \
 				libft/ft_strlen.c \
 				libft/ft_substr.c \
-				libft/ft_atoi.c \
-				libft/ft_itoa.c \
-				libft/ft_strlcpy.c \
-				parsing/ft_parsing.c \
-				parsing/parsing_utils.c \
-				parsing/check_parsing.c \
 				parsing/check_parsing_2.c \
+				parsing/check_parsing.c \
 				parsing/fill_tab_utils.c \
 				parsing/ft_fill_tab.c \
-				ft_launch_map.c \
-				ft_mlx_init.c \
-				ft_draw_minimap.c \
-				ft_mini_raycast.c \
-				ft_player.c \
-				ft_raycasting.c
+				parsing/ft_launch_map.c \
+				parsing/ft_parsing.c \
+				parsing/parsing_utils.c
 
 OBJS		=	$(addprefix ${OBJECTS}/, $(SRCS:.c=.o))
 

@@ -6,11 +6,11 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 23:59:02 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/26 16:26:05 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:33:45 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 static void	init_raycast_mini(t_data *data, t_coord *cd, t_minimap *m, int len)
 {

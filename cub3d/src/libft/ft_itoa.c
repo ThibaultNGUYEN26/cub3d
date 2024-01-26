@@ -6,11 +6,11 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 22:08:26 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/21 22:29:49 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 17:15:08 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 static int	ft_size(int n)
 {

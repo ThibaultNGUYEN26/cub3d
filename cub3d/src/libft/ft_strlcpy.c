@@ -6,11 +6,11 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 22:10:25 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/24 17:16:33 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 17:15:08 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
 {

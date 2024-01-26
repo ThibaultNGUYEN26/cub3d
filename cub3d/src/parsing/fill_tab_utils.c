@@ -6,11 +6,11 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 21:11:26 by rchbouki          #+#    #+#             */
-/*   Updated: 2024/01/25 22:19:26 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 20:13:28 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 void	ft_check_surroundings(char *buf, int *k, int *i, t_data *data)
 {
@@ -61,7 +61,6 @@ void	tab_init_utils(char *buffer, int *k, t_data *data)
 			ft_free_data(data, i, buffer, "Allocation Failure.");
 		if (buffer[*k])
 			*k += 1;
-		printf("%s\n", data->tab[i]);
 	}
 	data->tab[i] = NULL;
 }

@@ -6,13 +6,13 @@
 /*   By: rchbouki <rchbouki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 01:49:10 by thibault          #+#    #+#             */
-/*   Updated: 2024/01/26 15:07:56 by rchbouki         ###   ########.fr       */
+/*   Updated: 2024/01/26 19:56:17 by rchbouki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
-int	ft_longest_line(t_data *data)
+static int	ft_longest_line(t_data *data)
 {
 	int	i;
 	int	j;
@@ -50,7 +50,7 @@ static void	ft_fix_line(int longest, t_data *data)
 			free(data->tab[i]);
 			data->tab[i] = extended_line;
 		}
-	}	
+	}
 }
 
 static void	ft_mini_fill(t_minimap *mini, t_data *data, int longest)
@@ -58,7 +58,7 @@ static void	ft_mini_fill(t_minimap *mini, t_data *data, int longest)
 	int	color;
 	int	x;
 	int	y;
-	
+
 	y = -1;
 	while (++y < mini->height)
 	{
@@ -66,7 +66,8 @@ static void	ft_mini_fill(t_minimap *mini, t_data *data, int longest)
 		while (++x < mini->width)
 		{
 			mini->y = (int)((double)y / mini->height * data->nb_lines);
-			mini->x = (int)((double)x / mini->width * ft_strlen(data->tab[mini->y]));
+			mini->x = (int)((double)x / mini->width \
+				* ft_strlen(data->tab[mini->y]));
 			if (data->tab[mini->y][mini->x] == '1')
 				color = 0x000000;
 			else
@@ -74,9 +75,9 @@ static void	ft_mini_fill(t_minimap *mini, t_data *data, int longest)
 			mini->img[y * mini->width + x] = color;
 		}
 	}
-	mini->player_x = (int)(data->player->pos_x * (mini->width
+	mini->player_x = (int)(data->player->pos_x * (mini->width \
 				/ (double)longest));
-	mini->player_y = (int)(data->player->pos_y * (mini->height
+	mini->player_y = (int)(data->player->pos_y * (mini->height \
 			/ (double)data->nb_lines));
 }
 
