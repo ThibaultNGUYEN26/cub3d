@@ -6,7 +6,7 @@
 #    By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/27 11:33:22 by thibnguy         ###   ########.fr        #
+#    Updated: 2024/01/27 12:07:57 by thibnguy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,24 +86,19 @@ ${OBJECTS}/%.o: ${SOURCES}/%.c
 	@$(CC) $(CFLAGS) -o $@ -c $< $(CINCLUDES)
 	@$(eval COMPILED_OBJS=$(shell echo "$(COMPILED_OBJS)+1" | bc))
 
-mlx:
-	@echo "Building MiniLibX..."
-	@make -C ${MLX_PATH}
-
-all: mlx ${NAME}
+all: ${NAME}
 
 ${NAME}: ${OBJS} ${OBJECTS}/${NAME}.o
 	@echo $(GREEN)"\n● Compilation of ${NAME}...\n"$(EOC)
 	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${OBJECTS}/${NAME}.o ${LIBS}
 
-bonus: mlx ${BONUS}
+bonus: ${BONUS}
 
 ${BONUS}: ${OBJS} ${OBJECTS}/bonus/${BONUS}.o
 	@echo $(GREEN)"\n● Compilation du ${BONUS} (bonus)...\n"$(EOC)
 	@${CC} ${CFLAGS} -o ${BONUS} ${OBJS} ${OBJECTS}/bonus/${BONUS}.o ${LIBS}
 
 clean:
-	@make clean -C ${MLX_PATH}
 	@echo ${RED}"● Deletion of binary files (.o)..."$(EOC)
 	@rm -rf ${OBJECTS}
 
@@ -113,4 +108,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: mlx all clean fclean re bonus
