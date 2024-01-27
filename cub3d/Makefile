@@ -6,7 +6,7 @@
 #    By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/27 11:06:37 by thibnguy         ###   ########.fr        #
+#    Updated: 2024/01/27 11:33:22 by thibnguy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,17 +86,17 @@ ${OBJECTS}/%.o: ${SOURCES}/%.c
 	@$(CC) $(CFLAGS) -o $@ -c $< $(CINCLUDES)
 	@$(eval COMPILED_OBJS=$(shell echo "$(COMPILED_OBJS)+1" | bc))
 
-all: ${NAME} #norminette
+mlx:
+	@echo "Building MiniLibX..."
+	@make -C ${MLX_PATH}
+
+all: mlx ${NAME}
 
 ${NAME}: ${OBJS} ${OBJECTS}/${NAME}.o
-	@make -C ${MLX_PATH}
 	@echo $(GREEN)"\n● Compilation of ${NAME}...\n"$(EOC)
 	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${OBJECTS}/${NAME}.o ${LIBS}
 
-#norminette:
-#	@norminette | grep "Error!" > /dev/null && echo $(WHITE)"● [Norminette]: "$(RED)"KO\n"$(EOC) || echo $(WHITE)"● [Norminette]: "$(GREEN)"OK\n"$(EOC)
-
-bonus: ${BONUS}
+bonus: mlx ${BONUS}
 
 ${BONUS}: ${OBJS} ${OBJECTS}/bonus/${BONUS}.o
 	@echo $(GREEN)"\n● Compilation du ${BONUS} (bonus)...\n"$(EOC)
