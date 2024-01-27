@@ -6,7 +6,7 @@
 #    By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 17:09:42 by thibault          #+#    #+#              #
-#    Updated: 2024/01/26 21:46:11 by thibnguy         ###   ########.fr        #
+#    Updated: 2024/01/27 11:06:37 by thibnguy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,8 +48,9 @@ SRCS_BONUS	=	${SRCS}
 OBJS		=	$(addprefix ${OBJECTS}/, $(SRCS:.c=.o))
 
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror ${INCLUDES} -L/usr/local/bin -O3 -g -fsanitize=undefined -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror ${INCLUDES} -L/usr/local/bin -O3 -g #-fsanitize=undefined -fsanitize=address
 LIBS		=	-lmlx -lXext -lX11 -lm
+MLX_PATH	=	./minilibx-linux
 CINCLUDES	=	${INCLUDES}
 
 BLACK		=	"\033[1;30m"
@@ -88,6 +89,7 @@ ${OBJECTS}/%.o: ${SOURCES}/%.c
 all: ${NAME} #norminette
 
 ${NAME}: ${OBJS} ${OBJECTS}/${NAME}.o
+	@make -C ${MLX_PATH}
 	@echo $(GREEN)"\n● Compilation of ${NAME}...\n"$(EOC)
 	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${OBJECTS}/${NAME}.o ${LIBS}
 
@@ -101,6 +103,7 @@ ${BONUS}: ${OBJS} ${OBJECTS}/bonus/${BONUS}.o
 	@${CC} ${CFLAGS} -o ${BONUS} ${OBJS} ${OBJECTS}/bonus/${BONUS}.o ${LIBS}
 
 clean:
+	@make clean -C ${MLX_PATH}
 	@echo ${RED}"● Deletion of binary files (.o)..."$(EOC)
 	@rm -rf ${OBJECTS}
 
